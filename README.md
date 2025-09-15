@@ -27,8 +27,8 @@
   <a href="https://wa.me/+255715654328?text=Hi+Bro--+I+Need+Help.+I+messaged+you+from+Peter-md+Repo" target="_blank">
     <img alt="whatsapp" src="https://img.shields.io/badge/ Whatsapp -25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
  
-  <a aria-label="Mrsky-md2 is free to use" href="https://github.com/King-pe/Peter-md" target="_blank">
-    <img alt="Mr-Sky-tech" src="https://img.shields.io/youtube/channel/subscribers/UCU071AMRqcd5mfTdCgJFwPg" target="_blank" />
+  <a aria-label="peter-md is free to use" href="https://github.com/King-pe/Peter-md" target="_blank">
+    <img alt="peter-tech" src="https://img.shields.io/youtube/channel/subscribers/UCU071AMRqcd5mfTdCgJFwPg" target="_blank" />
   </a>
 
 </p>
@@ -47,10 +47,10 @@
   <a href="https://github.com/King-pe/Peter-md/fork">
     <img src="https://img.shields.io/github/forks/King-pe/Peter-md?label=Fork&style=social">
   <p align="left"> 
-  <a href="https://github.com/King-pe/Mrsky-md22/stargazers">
+  <a href="https://github.com/King-pe/peter-md/stargazers">
     <img src="https://img.shields.io/github/stars/King-pe/Peter-md?style=social">
 
-<p align="center"> Mrsky-md2 uses
+<p align="center"> Peter-md uses
   <a href="https://github.com/adiwajshing/Baileys">Multi-Device Baileys.</a>
 </p>
 <p align="center">
@@ -60,7 +60,7 @@
 ---
 
 <p align="center">
-  <a href="https://github.com/King-pe/Peter-md"><b>Mr-Sky-md</b></a> Support Deploy On...
+  <a href="https://github.com/King-pe/Peter-md"><b>Peter-md</b></a> Support Deploy On...
 </p>
 
 <p align="center">
@@ -71,8 +71,7 @@
   <a href="https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2King-pe%2Peter-md"><img src="https://img.shields.io/badge/heroku-9d7acc?style=for-the-badge&logo=heroku&logoColor=430098"></a>
   <a href="/"><img src="https://img.shields.io/badge/replit-253c99?style=for-the-badge&logo=replit&logoColor=F26207"></a>
   <a href="https://app.koyeb.com/apps/deploy?type=git&repository=github.com/King-pe/peter-md&branch=main&env[SESSION_ID]&env[OWNER_NUMBER]=255715654328&env[MONGODB_URI]&&env[OWNER_NAME]=mrsky ᴛᴇᴄʜ&env[KOYEB_API]&env[PREFIX]=.&env[WAPRESENCE]&env[AUTO_READ_STATUS]=true&env[DISABLE_PM]=false&env[PACK_AUTHER]=whatsapp+bot&env[PACK_NAME]=Mrsky-ᴛᴇᴄʜ&env[STYLE]=0&env[MODE]=private&env[READ_MESSAGE]=false&env[THEME]=MRSKY&env[WARN_COUNT]=3&env[BLOCK_JID]=null&env[TIME_ZONE]=Africa/Dodoma&name=petermds&env[KOYEB_NAME]=Mrsky-md2&env[SUDO]=null&env[THUMB_IMAGE]=https://github.com/King-pe/peter-md"><img src="https://img.shields.io/badge/koyeb-033604?style=for-the-badge&logo=koyeb&logoColor=white"></a>
-</p>
-  <a href="https://youtube.com/shorts/b6zv1n6DTEM"><img src="https://img.shields.io/badge/CodeSpace-green?colorA=%23ff000&colorB=%23017e40&style=for-the-badge&logo=git&logoColor=white"></a>
+  <a href="/"><img src="https://img.shields.io/badge/CodeSpace-green?colorA=%23ff000&colorB=%23017e40&style=for-the-badge&logo=git&logoColor=white"></a>
 </p>
 <p align="center">Need help? please create an <a href="https://github.com/King-pe/peter-md/issues">issue</a></p>
 
@@ -98,8 +97,10 @@ if scan qr is not working please try using pairing code i am currently working o
 2.  [`PARING CODE`](http://mrsky.lovestoblog.com). 𝙤𝙧 𝙨𝙚𝙧𝙫𝙚𝙧 2 𝙥𝙖𝙞𝙧𝙞𝙣𝙜 𝙘𝙤𝙙𝙚
     <br>
 <a href="/"><img title="𝙋𝙖𝙞𝙧𝙞𝙣𝙜 𝙘𝙤𝙙𝙚 𝙨𝙚𝙧𝙫𝙚𝙧 2" src="https://img.shields.io/badge/𝙥𝙖𝙞𝙧𝙞𝙣𝙜 𝙘𝙤𝙙𝙚 𝙨𝙚𝙧𝙫𝙚𝙧 2-h?color=green&style=for-the-badge&logo=msi"></a>
+
 `it is currently powerful working`
 Then `Go-to Whatapp>Three dots>Linked Devices`***
+
 3.  `Star ⭐ Repository` for Courage.***
 4.  ***Deploy on [`HEROKU`](https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2FKing-pe%2Fpeter-md)***
 5.  ***Deploy on [`Replit`](https://replit.com/github/King-pe/peter-md)***
@@ -112,44 +113,6 @@ Then `Go-to Whatapp>Three dots>Linked Devices`***
 
 
 
-
-- Star ⭐ repo if you like this bot.
-- If any problem, then 
-
-
-### I Am
-- [MR Sky Tech](https://github.com/King-pe) 
-
-
---
-
-
-<h2 align="center">  HEROKU
-</h2>
-   
-## 
-👇👇👇👇👇👇👇👇
-- [`Deploy on Heroku`]( https://dashboard.heroku.com/new?template=https://github.com/King-pe/peter-md)
-
-
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-  ##
-  
-  * [`𝐝𝐨𝐧'𝐭 𝐞𝐯𝐞𝐧 𝐡𝐚𝐯𝐞 𝐠𝐢𝐭𝐡𝐮𝐛 𝐚𝐜𝐜𝐨𝐮𝐧𝐭` How To s
-Mrsky tech](https://readme-typing-svg.demolab.com?font=Anton&size=30&pause=998&color=F51FFF&background=F7F2F20A&vCenter=true&random=false&width=465&lines=thank+you%F0%9F%91%8B!;for+using+peter+md;🙏;🙏+✍🏾;🥰)]
-
-<h1>PETER MD</h1> 
-<b>Thanks For</b> -
-
- [mrsky 💖](https://wa.link/bcv9am) 
- 
- thanks for helps 💖
-
- ## [ WHATSAPP GROUPS ](https://chat.whatsapp.com/IveQVlzOl6a5DKil74rmM3)
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-©2024
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
