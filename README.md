@@ -77,33 +77,13 @@
 <p align="center">Need help? please create an <a href="https://github.com/King-pe/peter-md/issues">issue</a></p>
 
  
-
-
-
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-## Bot Games
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
----
-1. ***Connect Four Game.***
-2.  ***Tic Tac Toe.***
-3.  ***Number Guessing Game.***
-4.  ***Word chain Game(wcg).***
-5.  ***Hidden Card Game.***
-6.  ***Rolling Dice.***
-7.  ***Character Guessing Game.***
-8.  ***Capital of City Finding.***
-##
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 
- 
 
+<h3>PETER-MD Stats</h3>
 
-
-<h3>Mr-Sky-MD Stats</h3>
-
-![Mrsky-Md Stats](https://github-readme-stats.vercel.app/api/pin/?username=King-pe&repo=peter-md&show_owner=true&theme=dark)
+![Peter-Md Stats](https://github-readme-stats.vercel.app/api/pin/?username=King-pe&repo=peter-md&show_owner=true&theme=dark)
 
 
     
@@ -120,15 +100,12 @@ if scan qr is not working please try using pairing code i am currently working o
 <a href="/"><img title="𝙋𝙖𝙞𝙧𝙞𝙣𝙜 𝙘𝙤𝙙𝙚 𝙨𝙚𝙧𝙫𝙚𝙧 2" src="https://img.shields.io/badge/𝙥𝙖𝙞𝙧𝙞𝙣𝙜 𝙘𝙤𝙙𝙚 𝙨𝙚𝙧𝙫𝙚𝙧 2-h?color=green&style=for-the-badge&logo=msi"></a>
 `it is currently powerful working`
 Then `Go-to Whatapp>Three dots>Linked Devices`***
-3.  ***Get Mongodb_URI from [`Mongodb site`](https://www.mongodb.com/) | Watch Tutorial [`To Get Mongodb_URI`](https://youtube.com/shorts/b6zv1n6DTEM). `Optional`***
-5. and `Star ⭐ Repository` for Courage.***
-8.  ***Deploy tutorial [`Youtube Video`](https://youtu.be/6rnftFl0fAI).***
-9.  ***Deploy FREE on `Codespace,` First see [`Codespace tutorial`](https://youtu.be/3NdJb6_1cJM)***
-10.  ***Deploy on [`HEROKU`](https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2FKing-pe%2Fpeter-md)***
-12.  ***Deploy on [`Replit`](https://replit.com/github/King-pe/peter-md)***
-11.  ***Deploy on [`Railway`](https://railway.com?referralCode=HbXQwf)***
-12.  ***Deploy on [`Koyeb`](https://app.koyeb.com/apps/deploy?type=git&repository=github.com/King-pe/peter-md22&branch=main&env[SESSION_ID]&env[OWNER_NUMBER]=255715654328env[MONGODB_URI]&&env[OWNER_NAME]=Mrsky&env[KOYEB_API]&env[PREFIX]=.&env[WAPRESENCE]&env[AUTO_READ_STATUS]=false&env[DISABLE_PM]=false&env[PACK_AUTHER]=whatsapp+bot&env[PACK_NAME]=peter+md&env[STYLE]=0&env[MODE]=private&env[READ_MESSAGE]=false&env[THEME]=PETER&env[WARN_COUNT]=3&env[BLOCK_JID]=null&env[TIME_ZONE]=Africa/Dodoma&name=peter-md&env[KOYEB_NAME]=suhail-md&env[SUDO]=null&env[THUMB_IMAGE]=https://telegra.ph/file/504b26be1bb9cf690261b.jpg)***
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/uxQDNq?referralCode=HbXQwf&utm_medium=integration&utm_source=template&utm_campaign=generic)
+3.  `Star ⭐ Repository` for Courage.***
+4.  ***Deploy on [`HEROKU`](https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2FKing-pe%2Fpeter-md)***
+5.  ***Deploy on [`Replit`](https://replit.com/github/King-pe/peter-md)***
+6.  ***Deploy on [`Railway`](https://railway.com/deploy/uxQDNq?referralCode=HbXQwf&utm_medium=integration&utm_source=template&utm_campaign=generic)***
+7.  ***Deploy on [`Koyeb`](https://app.koyeb.com/apps/deploy?type=git&repository=github.com/King-pe/peter-md22&branch=main&env[SESSION_ID]&env[OWNER_NUMBER]=255715654328env[MONGODB_URI]&&env[OWNER_NAME]=Mrsky&env[KOYEB_API]&env[PREFIX]=.&env[WAPRESENCE]&env[AUTO_READ_STATUS]=false&env[DISABLE_PM]=false&env[PACK_AUTHER]=whatsapp+bot&env[PACK_NAME]=peter+md&env[STYLE]=0&env[MODE]=private&env[READ_MESSAGE]=false&env[THEME]=PETER&env[WARN_COUNT]=3&env[BLOCK_JID]=null&env[TIME_ZONE]=Africa/Dodoma&name=peter-md&env[KOYEB_NAME]=suhail-md&env[SUDO]=null&env[THUMB_IMAGE]=https://telegra.ph/file/504b26be1bb9cf690261b.jpg)***
+
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 ##
 ---
@@ -157,34 +134,12 @@ Then `Go-to Whatapp>Three dots>Linked Devices`***
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-##
----
-███╗░░░███╗██████╗░░██████╗██╗░░██╗██╗░░░██╗
-████╗░████║██╔══██╗██╔════╝██║░██╔╝╚██╗░██╔╝
-██╔████╔██║██████╔╝╚█████╗░█████═╝░░╚████╔╝░
-██║╚██╔╝██║██╔══██╗░╚═══██╗██╔═██╗░░░╚██╔╝░░
-██║░╚═╝░██║██║░░██║██████╔╝██║░╚██╗░░░██║░░░
-╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░
-
-███╗░░░███╗██████╗░
-████╗░████║██╔══██╗
-██╔████╔██║██║░░██║
-██║╚██╔╝██║██║░░██║
-██║░╚═╝░██║██████╔╝
-╚═╝░░░░░╚═╝╚═════╝░
-
----
-
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-<a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
-
-
   ##
   
   * [`𝐝𝐨𝐧'𝐭 𝐞𝐯𝐞𝐧 𝐡𝐚𝐯𝐞 𝐠𝐢𝐭𝐡𝐮𝐛 𝐚𝐜𝐜𝐨𝐮𝐧𝐭` How To s
 Mrsky tech](https://readme-typing-svg.demolab.com?font=Anton&size=30&pause=998&color=F51FFF&background=F7F2F20A&vCenter=true&random=false&width=465&lines=thank+you%F0%9F%91%8B!;for+using+peter+md;🙏;🙏+✍🏾;🥰)]
 
-<h1>MRSKY MD</h1> 
+<h1>PETER MD</h1> 
 <b>Thanks For</b> -
 
  [mrsky 💖](https://wa.link/bcv9am) 
