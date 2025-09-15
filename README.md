@@ -128,6 +128,7 @@ Then `Go-to Whatapp>Three dots>Linked Devices`***
 12.  ***Deploy on [`Replit`](https://replit.com/github/King-pe/peter-md)***
 11.  ***Deploy on [`Railway`](https://railway.com?referralCode=HbXQwf)***
 12.  ***Deploy on [`Koyeb`](https://app.koyeb.com/apps/deploy?type=git&repository=github.com/King-pe/peter-md22&branch=main&env[SESSION_ID]&env[OWNER_NUMBER]=255715654328env[MONGODB_URI]&&env[OWNER_NAME]=Mrsky&env[KOYEB_API]&env[PREFIX]=.&env[WAPRESENCE]&env[AUTO_READ_STATUS]=false&env[DISABLE_PM]=false&env[PACK_AUTHER]=whatsapp+bot&env[PACK_NAME]=peter+md&env[STYLE]=0&env[MODE]=private&env[READ_MESSAGE]=false&env[THEME]=PETER&env[WARN_COUNT]=3&env[BLOCK_JID]=null&env[TIME_ZONE]=Africa/Dodoma&name=peter-md&env[KOYEB_NAME]=suhail-md&env[SUDO]=null&env[THUMB_IMAGE]=https://telegra.ph/file/504b26be1bb9cf690261b.jpg)***
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/uxQDNq?referralCode=HbXQwf&utm_medium=integration&utm_source=template&utm_campaign=generic)
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
 ##
 ---
