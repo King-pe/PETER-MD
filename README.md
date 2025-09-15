@@ -32,7 +32,7 @@
   </a>
 
 </p>
-<p align="center"><img src="https://profile-counter.glitch.me/{King-pe}/count.svg" alt="Peter-md :: Visitor's Count" /></p>
+
 ---
   
 </p>
