@@ -1,7 +1,7 @@
 {
   "name": "PETER-md",
   "description": "Simple WhatsApp Bot",
-  "logo": "https://github.com/King-pe/Mrsky-md2/blob/main/lib/assets/logo.png?raw=true",
+  "logo": "https://github.com/King-pe/peter-md/blob/main/lib/assets/logo.png?raw=true",
   "keywords": ["PETER-MD", "PETER", "PETER MD BOT","PETER MD","peter-md","whatsapp-bot"],
   "success_url": "/",
   "stack": "container",
