@@ -65,7 +65,7 @@
 
 <p align="center">
   <a href="https://github.com/King-pe/Peter-md/blob/main/temp/deploy-on-vps.md"><img src="https://img.shields.io/badge/self hosting-3d1513?style=for-the-badge&logo=serverless&logoColor=FD5750"></a>
-  <a href="https://railway.app/template/GZOvIe?referralCode=wVDLrh"><img src="https://img.shields.io/badge/railway-3e164f?style=for-the-badge&logo=railway&logoColor=0B0D0E"></a>
+  <a href="https://railway.com/deploy/2b4wmf?referralCode=HbXQwf&utm_medium=integration&utm_source=template&utm_campaign=generic"><img src="https://img.shields.io/badge/railway-3e164f?style=for-the-badge&logo=railway&logoColor=0B0D0E"></a>
 </p>
 <p align="center">
   <a href="https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2King-pe%2Peter-md"><img src="https://img.shields.io/badge/heroku-9d7acc?style=for-the-badge&logo=heroku&logoColor=430098"></a>
@@ -104,7 +104,7 @@ Then `Go-to Whatapp>Three dots>Linked Devices`***
 3.  `Star ⭐ Repository` for Courage.***
 4.  ***Deploy on [`HEROKU`](https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2FKing-pe%2Fpeter-md)***
 5.  ***Deploy on [`Replit`](https://replit.com/github/King-pe/peter-md)***
-6.  ***Deploy on [`Railway`](https://railway.com/deploy/uxQDNq?referralCode=HbXQwf&utm_medium=integration&utm_source=template&utm_campaign=generic)***
+6.  ***Deploy on [`Railway`](https://railway.com/deploy/2b4wmf?referralCode=HbXQwf&utm_medium=integration&utm_source=template&utm_campaign=generic)***
 7.  ***Deploy on [`Koyeb`](https://app.koyeb.com/apps/deploy?type=git&repository=github.com/King-pe/peter-md22&branch=main&env[SESSION_ID]&env[OWNER_NUMBER]=255715654328env[MONGODB_URI]&&env[OWNER_NAME]=Mrsky&env[KOYEB_API]&env[PREFIX]=.&env[WAPRESENCE]&env[AUTO_READ_STATUS]=false&env[DISABLE_PM]=false&env[PACK_AUTHER]=whatsapp+bot&env[PACK_NAME]=peter+md&env[STYLE]=0&env[MODE]=private&env[READ_MESSAGE]=false&env[THEME]=PETER&env[WARN_COUNT]=3&env[BLOCK_JID]=null&env[TIME_ZONE]=Africa/Dodoma&name=peter-md&env[KOYEB_NAME]=suhail-md&env[SUDO]=null&env[THUMB_IMAGE]=https://telegra.ph/file/504b26be1bb9cf690261b.jpg)***
 
 <a><img src='https://i.imgur.com/LyHic3i.gif'/></a>
