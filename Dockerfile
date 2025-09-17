@@ -1,6 +1,6 @@
 FROM quay.io/sampandey001/secktor
 
-RUN git clone https://github.com/KIng-pe/Mrsky-md2.git /root/KIng-pe
+RUN git clone https://github.com/KIng-pe/peter-md.git /root/KIng-pe
 
 # Clear npm cache and remove node_modules directories
 RUN npm cache clean --force
