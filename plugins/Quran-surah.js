@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
-import { translate } from '@vitalets/google-translate-api';
+const fetch = require('node-fetch');
+const { translate } = require('@vitalets/google-translate-api');
 
 let quranSurahHandler = async (m, { conn }) => {
   try {
@@ -51,7 +51,15 @@ ${translatedTafsirEnglish.text}`;
     m.reply(quranSurah);
 
     if (json.data.recitation.full) {
-      conn.sendFile(m.chat, json.data.recitation.full, 'recitation.mp3', null, m, true, { type: 'audioMessage', ptt: true });
+      conn.sendFile(
+        m.chat,
+        json.data.recitation.full,
+        'recitation.mp3',
+        null,
+        m,
+        true,
+        { type: 'audioMessage', ptt: true }
+      );
     }
   } catch (error) {
     console.error(error);
@@ -61,11 +69,6 @@ ${translatedTafsirEnglish.text}`;
 
 quranSurahHandler.help = ['quran [surah_number|surah_name]'];
 quranSurahHandler.tags = ['quran', 'surah'];
-quranSurahHandler.command = ['quran', 'surah']
+quranSurahHandler.command = ['quran', 'surah'];
 
-export default quranSurahHandler;
-
-  
-  
-  
-  
+module.exports = quranSurahHandler;
