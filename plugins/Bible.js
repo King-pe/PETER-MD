@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
-import { translate } from '@vitalets/google-translate-api';
+const fetch = require('node-fetch');
+const { translate } = require('@vitalets/google-translate-api');
 
 const BASE_URL = 'https://bible-api.com';
 
@@ -24,8 +24,10 @@ let bibleChapterHandler = async (m, { conn }) => {
 
     let chapterData = await chapterRes.json();
 
+    // Translate text to Hindi
     let translatedChapterHindi = await translate(chapterData.text, { to: 'hi', autoCorrect: true });
 
+    // Translate text to English (for consistency)
     let translatedChapterEnglish = await translate(chapterData.text, { to: 'en', autoCorrect: true });
 
     let bibleChapter = `
@@ -49,4 +51,4 @@ bibleChapterHandler.help = ['bible [chapter_number|chapter_name]'];
 bibleChapterHandler.tags = ['religion'];
 bibleChapterHandler.command = ['bible', 'chapter'];
 
-export default bibleChapterHandler;
+module.exports = bibleChapterHandler;
