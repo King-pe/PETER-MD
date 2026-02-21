@@ -60,6 +60,7 @@
       "pm2": "^5.2.0",
       "puppeteer": "latest",
       "qrcode": "latest",
+      "sharp": "^0.32.6",
       "secktor-pack": "latest",
       "simple-git": "^3.15.1",
       "translatte": "^3.0.1",
