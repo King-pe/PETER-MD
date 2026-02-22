@@ -1,5 +1,5 @@
 services:
-  - type: worker
+  - type: web
     name: peter-md
     env: node
     plan: free
@@ -18,3 +18,5 @@ services:
         value: "public"
       - key: PREFIX
         value: "."
+      - key: APP_URL
+        sync: false

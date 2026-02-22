@@ -16,36 +16,40 @@
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Optimized for Render Deployment
 
-To use PETER-MD, you need a `SESSION_ID`. You can get it easily using one of the methods below:
+This version of **PETER-MD** is specifically updated to work seamlessly on **Render** with an integrated session generator. No more external QR servers!
 
-### 1. Get Session ID (Recommended)
-Click the button below to go to the session generation page where you can choose between QR Scan or Pairing Code.
-
-<p align="center">
-  <a href="https://peter-md.onrender.com/session">
-    <img src="https://img.shields.io/badge/GET%20SESSION%20ID-h?color=darkblue&style=for-the-badge&logo=msi" alt="Get Session">
-  </a>
-</p>
-
-### 2. Direct Methods
-If you prefer direct access:
-- **[SCAN QR CODE](https://peter-md.onrender.com/qr-scan)**
-- **[PAIRING CODE](https://peter-md.onrender.com/pair)**
+### 🌟 Key Updates
+- **Integrated QR/Pairing Server:** Get your session directly from your deployed bot.
+- **Render Ready:** Updated `render.yaml` and `package.json` for hassle-free deployment.
+- **Improved Stability:** Fixed session, QR scan, and pairing issues.
 
 ---
 
-## 🛠️ Deployment Methods
+## 🛠️ Quick Start (Render)
 
-Once you have your `SESSION_ID`, you can deploy the bot on your favorite platform:
+1. **Fork this Repository:**
+   Click the **Fork** button at the top right of this page.
 
-| Platform | Link |
-| :--- | :--- |
-| **Heroku** | [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2FKing-pe%2FPETER-md) |
-| **Replit** | [![Run on Replit](https://replit.com/badge/github/King-pe/PETER-md)](https://replit.com/github/King-pe/PETER-md) |
-| **Railway** | [![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/deploy/2b4wmf?referralCode=HbXQwf) |
-| **Koyeb** | [![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/apps/deploy?type=git&repository=github.com/King-pe/PETER-md) |
+2. **Deploy to Render:**
+   - Create a new **Web Service** on [Render](https://render.com).
+   - Connect your forked repository.
+   - Use the following settings:
+     - **Environment:** `Node`
+     - **Build Command:** `npm install`
+     - **Start Command:** `npm start`
+   - Add **Environment Variables**:
+     - `MONGODB_URI`: Your MongoDB connection string.
+     - `OWNER_NUMBER`: Your phone number (e.g., `255682211773`).
+     - `APP_URL`: Your Render app URL (e.g., `https://peter-md.onrender.com`).
+
+3. **Get Session ID:**
+   - Once deployed, visit your app URL.
+   - Choose **QR Scan** or **Pairing Code**.
+   - After connecting, your `SESSION_ID` will be sent to your WhatsApp.
+   - Copy the `SESSION_ID` and add it to your Render Environment Variables.
+   - Restart the Render service.
 
 ---
 
@@ -65,7 +69,7 @@ Once you have your `SESSION_ID`, you can deploy the bot on your favorite platfor
 ## 📞 Support & Community
 
 - **Owner:** [Peter Joram](https://wa.me/255715654328)
-- **WhatsApp Group:** [Join Now](https://chat.whatsapp.com/HJgOTkcWL0BBqpsMm5cT6T)
+- **WhatsApp Group:** [Join Now](https://chat.whatsapp.com/I98ptwPbiFd7CvHXtcJMxp)
 - **YouTube Channel:** [Subscribe](https://youtube.com/@JASTINMTEWA-vn9pl)
 
 ---
