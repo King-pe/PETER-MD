@@ -1,0 +1,49 @@
+{
+  "name": "PETER-MD",
+  "description": "Multi-device WhatsApp bot with integrated session generator",
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "baileys",
+    "multi-device"
+  ],
+  "repository": "https://github.com/King-pe/PETER-md",
+  "env": {
+    "SESSION_ID": {
+      "description": "Your WhatsApp session ID. Get it from the web interface.",
+      "required": false
+    },
+    "MONGODB_URI": {
+      "description": "MongoDB connection string",
+      "required": false
+    },
+    "OWNER_NUMBER": {
+      "description": "Your WhatsApp number with country code",
+      "value": "255682211773"
+    },
+    "SUDO": {
+      "description": "Sudo user numbers (comma separated)",
+      "value": "255682211773"
+    },
+    "PREFIX": {
+      "description": "Command prefix",
+      "value": "."
+    },
+    "MODE": {
+      "description": "Bot mode (public or private)",
+      "value": "public"
+    },
+    "BOT_NAME": {
+      "description": "Bot name",
+      "value": "PETER-MD"
+    },
+    "OWNER_NAME": {
+      "description": "Owner name",
+      "value": "PETER"
+    },
+    "TZ": {
+      "description": "Timezone",
+      "value": "Africa/Dar_es_Salaam"
+    }
+  }
+}
