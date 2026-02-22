@@ -68,12 +68,12 @@
     "pastebin-js": "^1.0.6",
     "performance-now": "^2.1.0",
     "pg": "^8.11.3",
-    "secktor-pack": "^1.0.4",
+    "youtube-sr": "^4.3.4",
     "simple-git": "^3.20.0",
-    "translatte": "^1.1.0",
+    "translatte": "^3.0.1",
     "wa-sticker-formatter": "^4.4.4",
     "youtubei.js": "^7.0.0",
-    "ytdl-secktor": "^1.0.1"
+    "ytdl-secktor": "0.0.1-development"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

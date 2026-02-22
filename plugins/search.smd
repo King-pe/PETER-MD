@@ -40,7 +40,7 @@ const fetch = require('node-fetch')
 
    //---------------------------------------------------------------------------
    const { shazam } = require('../lib')
-   let yts = require("secktor-pack");
+   let yts = require("youtube-sr").default;
    smd({
            pattern: "find",
            alias :["shazam"],
