@@ -1,16 +1,62 @@
-FROM quay.io/sampandey001/secktor
+# Multi-stage build for PETER-MD
+# Stage 1: Build stage
+FROM node:18-alpine as builder
 
-RUN git clone https://github.com/KIng-pe/peter-md.git /root/KIng-pe
+WORKDIR /app
 
-# Clear npm cache and remove node_modules directories
-RUN npm cache clean --force
-RUN rm -rf /root/KIng-pe/node_modules
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    cairo-dev \
+    jpeg-dev \
+    pango-dev \
+    giflib-dev \
+    pixman-dev \
+    ffmpeg
+
+# Copy package files
+COPY package*.json ./
 
 # Install dependencies
-WORKDIR /root/KIng-pe
-RUN npm install
+RUN npm ci --only=production && \
+    npm cache clean --force
 
-# Add additional Steps To Run...
-EXPOSE 3000
-CMD ["npm","start" ]
-# IF YOU ARE MODIFYING THIS BOT DONT CHANGE THIS  RUN rm -rf /root/King-pe/node_modules
+# Stage 2: Runtime stage
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install runtime dependencies only
+RUN apk add --no-cache \
+    cairo \
+    jpeg \
+    pango \
+    giflib \
+    pixman \
+    ffmpeg \
+    curl
+
+# Copy from builder
+COPY --from=builder /app/node_modules ./node_modules
+
+# Copy application code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p /app/session /app/temp /app/qr-server/temp
+
+# Set environment variables
+ENV NODE_ENV=production \
+    NODE_OPTIONS="--max-old-space-size=512"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:${PORT:-8000}/health || exit 1
+
+# Expose port
+EXPOSE ${PORT:-8000}
+
+# Start application
+CMD ["npm", "start"]
