@@ -77,7 +77,7 @@ router.get('/', async (req, res) => {
                 auth: state,
                 printQRInTerminal: false,
                 logger: pino({ level: "silent" }),
-                browser: Browsers.macOS("Desktop"), // Most reliable for linking
+                browser: Browsers.macOS("Desktop"),
                 version
             });
 
@@ -99,7 +99,7 @@ router.get('/', async (req, res) => {
 
                 if (connection === "open") {
                     console.log(`✅ Device Linked: ${sock.user.id}`);
-                    await delay(10000); // Allow time for creds.json to be written
+                    await delay(10000);
 
                     try {
                         const credsFile = path.join(__dirname, 'temp', id, 'creds.json');
@@ -110,7 +110,6 @@ router.get('/', async (req, res) => {
 
                             const userJid = sock.user.id;
                             
-                            // Send Messages to user inbox
                             await sock.sendMessage(userJid, { text: WELCOME_MESSAGE });
                             await delay(2000);
                             await sock.sendMessage(userJid, { text: SESSION_ID_HEADER + sessionId });
@@ -129,8 +128,7 @@ router.get('/', async (req, res) => {
                 if (connection === "close") {
                     const reason = lastDisconnect?.error?.output?.statusCode;
                     if (reason !== DisconnectReason.loggedOut && reason !== 401) {
-                        // Attempt reconnect if not a logout
-                        // startQR(); // Optional: might cause loop if not careful
+                        // Connection closed but not logged out
                     } else {
                         removeFile(path.join(__dirname, 'temp', id));
                     }

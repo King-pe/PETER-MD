@@ -1,89 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PETER-MD-Session</title>
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: black;
-    }
-
-    .btn {
-      --color: #e5f5f1;
-      --color2: rgb(0, 0, 0);
-      width: 200px;
-      padding: 0.8em 1.75em;
-      background-color: black;
-      border: 3px solid Gold;
-      border-radius: 6px;
-      border: .3px solid var(--color);
-      transition: .5s;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      z-index: 1;
-      font-weight: 300;
-      font-size: 17px;
-      font-family: 'Roboto', 'Segoe UI', sans-serif;
-      text-transform: uppercase;
-      color: var(--color);
-      margin-bottom: 24px;
-    }
-
-    .btn::after, .btn::before {
-      content: '';
-      display: block;
-      height: 100%;
-      width: 100%;
-      transform: skew(90deg) translate(-50%, -50%);
-      position: absolute;
-      inset: 50%;
-      left: 25%;
-      z-index: -1;
-      transition: .5s ease-out;
-      background-color: var(--color);
-    }
-
-    .btn::before {
-      top: -50%;
-      left: -25%;
-      transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
-    }
-
-    .btn:hover::before {
-      transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
-    }
-
-    .btn:hover::after {
-      transform: skew(45deg) translate(-50%, -50%);
-    }
-
-    .btn:hover {
-      color: var(--color2);
-    }
-
-    .btn:active {
-      filter: brightness(.7);
-      transform: scale(.98);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETER-MD - Get Session ID</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .option-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .option-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .content {
+            display: none;
+        }
+        
+        .content.active {
+            display: block;
+        }
+        
+        .qr-container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        #qrImage {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .loading {
+            color: #667eea;
+            font-weight: 600;
+            padding: 20px;
+        }
+        
+        .pair-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .pair-form input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .pair-form input:focus {
+            border-color: #667eea;
+        }
+        
+        .pair-form button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .pair-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .pair-code-display {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .pair-code-display.active {
+            display: block;
+        }
+        
+        .code-label {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .code-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #333;
+        }
+        
+        .info-box strong {
+            color: #667eea;
+        }
+        
+        .footer {
+            color: #999;
+            font-size: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body><marquee style="background-color:white; color:black; font-size:14px;">
- Hello 👋 There and welcome to PETER-MD-Session 🧚</marquee><strong>
- <button onclick="window.open(`/qr-scan`)" class="btn">QR Code</button>
-  <button onclick="window.open(`/pair`)" class="btn">Pair Code</button>
-  <button onclick="window.open(`https://github.com/King-pe/PETER-MD`)" class="btn">Bot Repo</button>
-  <button onclick="window.open(`https://wa.me/255715654328`)" class="btn">Contact Me</button>
-  <button onclick="window.open(`https://chat.whatsapp.com/HJgOTkcWL0BBqpsMm5cT6T`)" class="btn">Wa Group</button>
-  <button onclick="window.open(`https://whatsapp.com/channel/0029VaYauR9ISTkHTj4xvi1l`)" class="btn">Wa Channel</button>
-  <button onclick="window.open(`https://youtube.com/@JASTINMTEWA-vn9pl`)" class="btn">Youtube</button>
-</strong>
+<body>
+    <div class="container">
+        <div class="logo">📱</div>
+        <h1>PETER-MD</h1>
+        <p class="subtitle">Get Your Session ID</p>
+        
+        <div class="options">
+            <button class="option-btn active" onclick="switchTab('qr')">📷 QR Scan</button>
+            <button class="option-btn" onclick="switchTab('pair')">🔐 Pair Code</button>
+        </div>
+        
+        <!-- QR Tab -->
+        <div id="qr" class="content active">
+            <div class="info-box">
+                <strong>📌 Instructions:</strong><br>
+                1. Open WhatsApp on your phone<br>
+                2. Go to Settings → Linked Devices<br>
+                3. Scan the QR code below
+            </div>
+            <div class="qr-container">
+                <div id="qrLoading" class="loading">Loading QR Code...</div>
+                <img id="qrImage" style="display:none;" alt="QR Code">
+            </div>
+        </div>
+        
+        <!-- Pair Tab -->
+        <div id="pair" class="content">
+            <div class="info-box">
+                <strong>📌 Instructions:</strong><br>
+                1. Enter your phone number (with country code)<br>
+                2. You'll receive a pairing code<br>
+                3. Enter it in WhatsApp
+            </div>
+            <div class="pair-form">
+                <input type="text" id="phoneNumber" placeholder="e.g., 255682211773" maxlength="15">
+                <button onclick="getPairingCode()">Get Code</button>
+            </div>
+            <div id="pairCodeDisplay" class="pair-code-display">
+                <div class="code-label">Your Pairing Code:</div>
+                <div class="code-value" id="pairCodeValue"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Made with ❤️ by <a href="https://wa.me/255715654328">Peter-MD</a></p>
+            <p><a href="https://github.com/King-pe/PETER-md">GitHub</a> | <a href="https://chat.whatsapp.com/I98ptwPbiFd7CvHXtcJMxp">WhatsApp Group</a></p>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.option-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tab === 'qr') {
+                loadQRCode();
+            }
+        }
+        
+        function loadQRCode() {
+            const qrLoading = document.getElementById('qrLoading');
+            const qrImage = document.getElementById('qrImage');
+            
+            qrLoading.style.display = 'block';
+            qrImage.style.display = 'none';
+            
+            fetch('/qr')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    qrImage.src = url;
+                    qrImage.style.display = 'block';
+                    qrLoading.style.display = 'none';
+                })
+                .catch(error => {
+                    qrLoading.textContent = 'Error loading QR code. Please refresh.';
+                    console.error('Error:', error);
+                });
+        }
+        
+        function getPairingCode() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if (!phoneNumber) {
+                alert('Please enter your phone number');
+                return;
+            }
+            
+            fetch(`/code?number=${phoneNumber}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code) {
+                        document.getElementById('pairCodeValue').textContent = data.code;
+                        document.getElementById('pairCodeDisplay').classList.add('active');
+                    } else {
+                        alert('Error getting pairing code');
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                    console.error('Error:', error);
+                });
+        }
+        
+        // Load QR code on page load
+        window.addEventListener('load', loadQRCode);
+    </script>
 </body>
 </html>
