@@ -1,6 +1,6 @@
 # Multi-stage build for PETER-MD
 # Stage 1: Build stage
-FROM node:18-alpine as builder
+FROM node:20-alpine as builder
 
 WORKDIR /app
 
@@ -20,11 +20,11 @@ RUN apk add --no-cache \
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production && \
+RUN npm install --omit=dev && \
     npm cache clean --force
 
 # Stage 2: Runtime stage
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
