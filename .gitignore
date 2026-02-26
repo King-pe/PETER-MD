@@ -1,7 +1,0 @@
-node_modules
-Sessions
-temp
-.env
-package-lock.json
-*.log
-store.json
