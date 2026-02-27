@@ -14,7 +14,21 @@ const SessionSchema = new mongoose.Schema({
     session: { type: String, required: true }
 });
 
+const UserSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true }, // sender jid
+    joinedAt: { type: Date, default: Date.now },
+    premiumUntil: { type: Date },
+    isTrialUsed: { type: Boolean, default: false },
+    lastOrder: {
+        order_id: String,
+        status: String,
+        amount: Number,
+        createdAt: Date
+    }
+});
+
 const Setting = mongoose.model('Setting', SettingSchema);
 const Session = mongoose.model('Session', SessionSchema);
+const User = mongoose.model('User', UserSchema);
 
-module.exports = { Setting, Session };
+module.exports = { Setting, Session, User };
