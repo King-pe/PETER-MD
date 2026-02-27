@@ -55,6 +55,9 @@ async function start() {
 				if (reason === DisconnectReason.loggedOut) {
 					console.log('🔄 Logged out, deleting session files');
 					try { fs.rmSync(SESSION_PATH, { recursive: true, force: true }); } catch (e) {}
+				} else {
+					console.log('🔄 Connection closed, reconnecting...');
+					setTimeout(start, 3000);
 				}
 			}
 		});
@@ -102,9 +105,11 @@ async function start() {
 				
 				if (action === 'add' || action === 'remove') {
 					let groupName = 'Group';
+					let memberCount = '0';
 					try {
 						const metadata = await client.groupMetadata(id);
 						groupName = metadata.subject;
+						memberCount = metadata.participants.length;
 					} catch (e) {}
 
 					for (const participant of participants) {
@@ -115,14 +120,18 @@ async function start() {
 							ppUrl = 'https://i.imgur.com/HeIi0w0.png'; // Picha ya default kama hana DP
 						}
 
-						let caption = '';
+						const userName = participant.split('@')[0];
+						let messageContent = {};
+
 						if (action === 'add') {
-							caption = `Karibu @${participant.split('@')[0]} kwenye *${groupName}*! 🥳\n\nTunafurahi kukuona.`;
+							// Welcome Card API - Inatengeneza picha yenye jina
+							const welcomeUrl = `https://api.popcat.xyz/welcomecard?background=https://telegra.ph/file/e29742004966086e3ec2a.jpg&text1=${encodeURIComponent(userName)}&text2=Welcome+to+${encodeURIComponent(groupName)}&text3=Member+${memberCount}&avatar=${encodeURIComponent(ppUrl)}`;
+							messageContent = { image: { url: welcomeUrl }, caption: `Karibu @${userName} kwenye *${groupName}*! 🥳\n\nTunafurahi kukuona.`, mentions: [participant] };
 						} else {
-							caption = `Kwaheri @${participant.split('@')[0]} 👋. Tutaonana baadaye!`;
+							messageContent = { image: { url: ppUrl }, caption: `Kwaheri @${userName} 👋. Tutaonana baadaye!`, mentions: [participant] };
 						}
 
-						await client.sendMessage(id, { image: { url: ppUrl }, caption: caption, mentions: [participant] });
+						await client.sendMessage(id, messageContent);
 					}
 				}
 			} catch (err) {
@@ -184,7 +193,7 @@ app.get('/qr', async (req, res) => {
 			<body>
 				<h2>QR Code Loading...</h2>
 				<p>Current Status: <b>${connectionStatus}</b></p>
-				<p>Please wait, page reloads every 5 seconds.</p>
+				<p>Please wait, page reloads every 5 seconds. (Bot is restarting if status is 'close')</p>
 				<br>
 				<p>If it's stuck on "connecting" for long:</p>
 				<a href="/reset" style="background:red;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Reset Session</a>
