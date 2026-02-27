@@ -5,6 +5,7 @@ const { default: makeWASocket,
 		useMultiFileAuthState } = require('@whiskeysockets/baileys');
 const fs = require('fs');
 const path = require('path');
+const qrcode = require('qrcode');
 
 // where baileys will keep its multi-file auth state directory
 const SESSION_PATH = path.join(process.cwd(), 'auth_info_baileys');
@@ -22,6 +23,8 @@ async function start() {
 		client = makeWASocket({
 			auth: state,
 			printQRInTerminal: true,
+			browser: ["Peter-MD", "Chrome", "1.0.0"], // Fixes 405 error
+			connectTimeoutMs: 60000,
 		});
 
 		client.ev.on('connection.update', update => {
@@ -66,9 +69,30 @@ start().catch(err => {
 
 const app = express();
 
-app.get('/qr', (req, res) => {
+app.get('/qr', async (req, res) => {
 	if (currentQr) {
-		return res.json({ qr: currentQr });
+		try {
+			const url = await qrcode.toDataURL(currentQr);
+			return res.send(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Peter-MD QR Scan</title>
+					<meta http-equiv="refresh" content="10">
+					<style>body{display:flex;justify-content:center;align-items:center;height:100vh;background:#f0f2f5;font-family:sans-serif;} .card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);text-align:center;}</style>
+				</head>
+				<body>
+					<div class="card">
+						<h2>Scan QR Code</h2>
+						<img src="${url}" alt="QR Code" />
+						<p>Reloads every 10 seconds</p>
+					</div>
+				</body>
+				</html>
+			`);
+		} catch (err) {
+			return res.status(500).send('Error generating QR image');
+		}
 	}
 
 	if (client && client.user) {
