@@ -38,9 +38,23 @@ async function startBot() {
         auth: state,
         printQRInTerminal: false,
         logger: P({ level: 'silent' }),
-        browser: ['Peter-MD Bot', 'Chrome', '120.0.0'],
+        browser: ["Ubuntu", "Chrome", "20.0.04"],
         getMessage: async (key) => { return { conversation: 'Peter-MD' } }
     });
+
+    // Pairing Code Support
+    if (process.env.PAIRING_NUMBER && !sock.authState.creds.registered) {
+        setTimeout(async () => {
+            try {
+                let code = await sock.requestPairingCode(process.env.PAIRING_NUMBER.replace(/[^0-9]/g, ''));
+                code = code?.match(/.{1,4}/g)?.join("-") || code;
+                console.log(`✅ Pairing Code: ${code}`);
+                lastQr = `CODE:${code}`; // Store code in lastQr with a prefix for the web UI
+            } catch (err) {
+                console.error('Error requesting pairing code:', err);
+            }
+        }, 3000);
+    }
 
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect, qr } = update;
@@ -116,17 +130,40 @@ async function startBot() {
     
     app.get('/qr', async (req, res) => {
         if (!lastQr) {
-            return res.send('Bot is already connected or QR not generated yet. Please wait or check logs.');
+            return res.send('Bot is already connected or authentication not generated yet. Please wait or check logs.');
         }
+        
+        if (lastQr.startsWith('CODE:')) {
+            const code = lastQr.split(':')[1];
+            return res.send(`
+                <html>
+                    <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; background-color: #f0f2f5;">
+                        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;">
+                            <h1 style="color: #075e54;">Peter-MD Pairing Code</h1>
+                            <p style="font-size: 1.2rem; color: #555;">Ingiza kodi hii kwenye simu yako:</p>
+                            <div style="font-size: 3rem; font-weight: bold; letter-spacing: 5px; margin: 20px 0; color: #25d366; background: #e7fce3; padding: 20px; border-radius: 10px;">
+                                ${code}
+                            </div>
+                            <p style="color: #888;">Nenda kwenye WhatsApp > Linked Devices > Link with phone number instead</p>
+                            <script>setTimeout(() => { location.reload(); }, 30000);</script>
+                        </div>
+                    </body>
+                </html>
+            `);
+        }
+
         try {
             const qrImage = await QRCode.toDataURL(lastQr);
             res.send(`
                 <html>
-                    <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
-                        <h1>Scan QR Code to Connect Peter-MD</h1>
-                        <img src="${qrImage}" style="width: 300px; height: 300px; border: 10px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
-                        <p>QR code will expire in 60 seconds. Refresh if it doesn't work.</p>
-                        <script>setTimeout(() => { location.reload(); }, 60000);</script>
+                    <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; background-color: #f0f2f5;">
+                        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;">
+                            <h1 style="color: #075e54;">Scan QR Code to Connect Peter-MD</h1>
+                            <img src="${qrImage}" style="width: 300px; height: 300px; border: 10px solid #eee; margin: 20px 0;" />
+                            <p style="color: #555;">Scan this QR code with your WhatsApp.</p>
+                            <p style="color: #888; font-size: 0.8rem;">QR code will expire in 60 seconds. Refresh if it doesn't work.</p>
+                            <script>setTimeout(() => { location.reload(); }, 60000);</script>
+                        </div>
                     </body>
                 </html>
             `);

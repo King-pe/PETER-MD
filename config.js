@@ -13,5 +13,6 @@ global.MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://KING-MDBOT:KING-M
 module.exports = {
     MONGODB_URI: global.MONGODB_URI,
     GURL: global.gurl,
-    THUMB_IMAGE: global.THUMB_IMAGE
+    THUMB_IMAGE: global.THUMB_IMAGE,
+    PAIRING_NUMBER: process.env.PAIRING_NUMBER || '255xxx'
 };

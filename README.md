@@ -24,6 +24,7 @@ WhatsApp Bot yenye mifumo ya **Group Management**, **Auto-React**, na **Status A
    - `PREFIX`: `.`
    - `PORT`: `3000`
 6. Baada ya kudeploy, angalia **Logs** ili uweze kuscan QR code.
+7. **Kama QR inakataa (Mboni inagoma)**: Ongeza variable ya `PAIRING_NUMBER` (mfano: `255682211773`) na utapata kodi ya tarakimu 8 kwenye logs au kwa kufungua link ya bot yako (`/qr`). Ingiza kodi hiyo kwenye WhatsApp > Linked Devices > Link with phone number instead.
 
 ## COMMANDS:
 - `.react on/off` - Washa/Zima auto-react (kwa kila group/chat).
