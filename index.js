@@ -104,6 +104,10 @@ app.get('/qr', async (req, res) => {
 	res.json({ error: 'No QR Available - Bot may be connected or starting' });
 });
 
+app.get('/', (req, res) => {
+	res.send('Peter-MD Bot is active ✅');
+});
+
 app.get('/logout', (req, res) => {
 	if (!client) return res.send('Not started yet');
 	client.logout();
@@ -113,4 +117,10 @@ app.get('/logout', (req, res) => {
 
 app.listen(process.env.PORT || 3000, () => {
 	console.log('http server listening');
+
+	// Auto-ping to keep Render awake
+	const pingUrl = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 3000}`;
+	setInterval(() => {
+		fetch(pingUrl).then(() => console.log('✅ Keep-alive ping')).catch(() => {});
+	}, 10 * 60 * 1000); // Ping every 10 minutes
 });
