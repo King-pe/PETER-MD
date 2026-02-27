@@ -31,7 +31,7 @@ async function start() {
 		client = makeWASocket({
 			auth: state,
 			printQRInTerminal: true,
-			browser: Browsers.macOS('Desktop'),
+			browser: ["Ubuntu", "Chrome", "20.0.04"],
 			syncFullHistory: false,
 			connectTimeoutMs: 60000,
 		});
@@ -59,9 +59,11 @@ async function start() {
 				console.log('❌ Connection closed:', reason);
 				lastError = `Connection closed: ${reason || 'Unknown'}`;
 
-				if (reason === DisconnectReason.loggedOut) {
-					console.log('🔄 Logged out, deleting session files');
+				if (reason === DisconnectReason.loggedOut || reason === 405) {
+					console.log('🔄 Session invalid (Logged out or 405), deleting session files');
 					try { fs.rmSync(SESSION_PATH, { recursive: true, force: true }); } catch (e) {}
+					// Restart to generate new QR
+					setTimeout(() => start().catch(console.error), 3000);
 				} else {
 					console.log('🔄 Connection closed, reconnecting...');
 					setTimeout(() => start().catch(console.error), 3000);
@@ -175,7 +177,7 @@ app.get('/qr', async (req, res) => {
 				<body>
 					<div class="card">
 						<h2>Scan QR Code</h2>
-						<img src="${qrImage}" alt="QR Code"/>
+						<img src="${url}" alt="QR Code" />
 						<p>Reloads every 5 seconds</p>
 						<p style="font-size:12px;color:gray;">Status: ${connectionStatus}</p>
 					</div>
