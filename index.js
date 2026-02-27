@@ -1,59 +1,66 @@
 require('dotenv').config();
 const express = require('express');
-const { default: makeWASocket,
-        DisconnectReason,
-        useSingleFileAuthState } = require('@adiwajshing/baileys');
+const { default: makeWASocket, DisconnectReason } = require('@whiskeysockets/baileys');
+const { initAuthCreds, BufferJSON } = require('@whiskeysockets/baileys');
 const fs = require('fs');
+const path = require('path');
 
 const SESSION_FILE = process.env.SESSION_FILE || 'session.json';
-const { state, saveState } = useSingleFileAuthState(SESSION_FILE);
 
-let client;          // the wa socket
-let currentQr = null; // store last QR string
+// Simple file-based auth state
+const getAuthState = () => {
+	if (fs.existsSync(SESSION_FILE)) {
+		return JSON.parse(fs.readFileSync(SESSION_FILE, 'utf-8'), BufferJSON.reviver);
+	}
+	const creds = initAuthCreds();
+	return { creds, keys: {} };
+};
+
+const saveAuthState = (state) => {
+	fs.writeFileSync(SESSION_FILE, JSON.stringify(state, BufferJSON.replacer, 2));
+};
+
+let client;
+let currentQr = null;
 
 async function start() {
-	// …other options you already use…
+	const authState = getAuthState();
+	
 	client = makeWASocket({
-		auth: state,
-		printQRInTerminal: true
+		auth: authState,
+		printQRInTerminal: true,
 	});
 
 	client.ev.on('connection.update', update => {
 		const { connection, qr, lastDisconnect } = update;
 
 		if (qr) {
-			// new QR received – remember it so the web endpoint can use it
 			currentQr = qr;
 		}
 
 		if (connection === 'open') {
-			// once open we clear the qr variable
 			currentQr = null;
 			console.log('WhatsApp connection established');
 		}
 
 		if (connection === 'close') {
-			const reason =
-				lastDisconnect?.error
-					&& new Boom(lastDisconnect.error).output?.statusCode;
-
+			const reason = lastDisconnect?.error?.output?.statusCode;
 			console.log('connection closed', reason);
 
-			// if we were logged out or restarted remove the session file
-			if (reason === DisconnectReason.loggedOut ||
-				reason === DisconnectReason.restartRequired) {
+			if (reason === DisconnectReason.loggedOut || reason === DisconnectReason.restartRequired) {
 				try { fs.unlinkSync(SESSION_FILE); } catch (e) {}
 				console.log('session file removed, restart to generate new QR');
 			}
 		}
 	});
 
-	client.ev.on('creds.update', saveState);
+	client.ev.on('creds.update', () => {
+		saveAuthState(authState);
+	});
 }
 
 start();
 
-// simple express API to serve/clear the QR
 const app = express();
 
 app.get('/qr', (req, res) => {
@@ -67,13 +74,12 @@ app.get('/qr', (req, res) => {
 		});
 	}
 
-	// still starting or just lost the QR
 	res.json({ error: 'No QR Available - Bot may be connected or starting' });
 });
 
 app.get('/logout', (req, res) => {
 	if (!client) return res.send('Not started yet');
-	client.logout();           // will trigger connection.update close event
+	client.logout();
 	currentQr = null;
 	res.send('logged out; restart process to obtain fresh QR');
 });
