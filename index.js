@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const { default: makeWASocket,
 		DisconnectReason,
-		useMultiFileAuthState } = require('@whiskeysockets/baileys');
+		useMultiFileAuthState,
+		Browsers } = require('@whiskeysockets/baileys');
 const fs = require('fs');
 const path = require('path');
 const qrcode = require('qrcode');
@@ -30,7 +31,8 @@ async function start() {
 		client = makeWASocket({
 			auth: state,
 			printQRInTerminal: true,
-			browser: ["Peter-MD", "Chrome", "1.0.0"], // Fixes 405 error
+			browser: Browsers.macOS('Desktop'),
+			syncFullHistory: false,
 			connectTimeoutMs: 60000,
 		});
 
@@ -173,7 +175,7 @@ app.get('/qr', async (req, res) => {
 				<body>
 					<div class="card">
 						<h2>Scan QR Code</h2>
-						<img src="${url}" alt="QR Code" />
+						<img src="${qrImage}" alt="QR Code"/>
 						<p>Reloads every 5 seconds</p>
 						<p style="font-size:12px;color:gray;">Status: ${connectionStatus}</p>
 					</div>
@@ -209,6 +211,7 @@ app.get('/qr', async (req, res) => {
 				<h2>QR Code Loading...</h2>
 				<p>Current Status: <b>${connectionStatus}</b></p>
 				${lastError ? `<p style="color:red;">Last Error: ${lastError}</p>` : ''}
+				${lastError.includes('405') ? '<p style="color:orange;font-weight:bold;">⚠️ 405 Error: Please click "Reset Session" below to fix.</p>' : ''}
 				<p>Please wait, page reloads every 5 seconds. (Bot is restarting if status is 'close')</p>
 				<br>
 				<p>If it's stuck on "connecting" for long:</p>
