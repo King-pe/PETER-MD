@@ -16,6 +16,7 @@ const SESSION_PATH = path.join(process.cwd(), 'auth_info_baileys');
 let client = null;
 let currentQr = null;
 let isConnected = false;
+let connectionStatus = 'starting';
 
 async function start() {
 	console.log('starting WhatsApp client, session path:', SESSION_PATH);
@@ -34,6 +35,7 @@ async function start() {
 		console.log('connection.update', JSON.stringify(update));
 		const { connection, qr, lastDisconnect } = update;
 
+			if (connection) connectionStatus = connection;
 			if (qr) {
 				currentQr = qr;
 				console.log('📱 New QR Code generated');
@@ -172,7 +174,23 @@ app.get('/qr', async (req, res) => {
 		});
 	}
 
-	res.json({ error: 'No QR Available - Bot may be connected or starting' });
+	res.send(`
+		<html>
+			<head>
+				<title>Peter-MD Status</title>
+				<meta http-equiv="refresh" content="5">
+				<style>body{font-family:sans-serif;text-align:center;padding:50px;}</style>
+			</head>
+			<body>
+				<h2>QR Code Loading...</h2>
+				<p>Current Status: <b>${connectionStatus}</b></p>
+				<p>Please wait, page reloads every 5 seconds.</p>
+				<br>
+				<p>If it's stuck on "connecting" for long:</p>
+				<a href="/reset" style="background:red;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Reset Session</a>
+			</body>
+		</html>
+	`);
 });
 
 app.get('/', (req, res) => {
@@ -184,6 +202,15 @@ app.get('/logout', (req, res) => {
 	client.logout();
 	currentQr = null;
 	res.send('logged out; restart process to obtain fresh QR');
+});
+
+app.get('/reset', (req, res) => {
+	res.send('Resetting session... Bot is restarting. Check /qr in 30 seconds.');
+	try {
+		if (client) client.end(undefined);
+		fs.rmSync(SESSION_PATH, { recursive: true, force: true });
+	} catch (e) {}
+	setTimeout(() => process.exit(0), 1000);
 });
 
 app.listen(process.env.PORT || 3000, () => {
