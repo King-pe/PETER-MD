@@ -1,4 +1,5 @@
 const { getSetting, updateSetting } = require('../database/db');
+const whatsapp = require('./whatsapp');
 
 async function handleCommand(sock, m, body, prefix) {
     const isGroup = m.key.remoteJid.endsWith('@g.us');
@@ -168,6 +169,30 @@ async function handleCommand(sock, m, body, prefix) {
             if (!args.length) return reply('Weka ujumbe wa reply.');
             await updateSetting('global', { statusreply: args.join(' ') });
             reply('Ujumbe wa status reply umehifadhiwa.');
+            break;
+
+        case 'walink':
+            if (!args[0]) return reply('Tumia: .walink 255712345678 Ujumbe wako');
+            try {
+                const phone = args[0];
+                const msg = args.slice(1).join(' ') || 'Habari!';
+                if (!whatsapp.isValidPhoneNumber(phone)) {
+                    return reply('❌ Namba sio sahihi. Tumia format: 255712345678');
+                }
+                const link = whatsapp.generateLink(phone, msg);
+                reply(`✅ Link: ${link}`);
+            } catch (err) {
+                reply('❌ Kosa: ' + err.message);
+            }
+            break;
+
+        case 'qrcode':
+            reply('📱 QR Code ni inapatikana kwenye: http://localhost:3000/qr\nScan kwa WhatsApp kuunganisha bot.');
+            break;
+
+        case 'botstatus':
+            const botStatus = sock.user ? `✅ Bot Imeunganishwa\n🤖 Jina: ${sock.user.name || 'Peter-MD'}\n📱 ID: ${sock.user.id.split(':')[0]}` : '❌ Bot haijaunganishwa';
+            reply(botStatus);
             break;
     }
 }

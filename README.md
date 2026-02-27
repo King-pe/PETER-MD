@@ -18,11 +18,15 @@ WhatsApp Bot yenye mifumo ya **Group Management**, **Auto-React**, na **Status A
    - **Environment**: `Node`
    - **Build Command**: `npm install`
    - **Start Command**: `npm start`
+
+> 💡 *Kumbuka:* nakili faili `.env.example` kuwa `.env` kwenye mizizi ya project na ujaze thamani zako (hii ni pamoja na `PETERPAY_API_KEY`).
+
 5. Ongeza **Environment Variables**:
    - `MONGODB_URI`: Link ya database yako ya MongoDB Atlas.
    - `OWNER_NUMBER`: Namba yako ya simu (mfano: `255682211773`).
    - `PREFIX`: `.`
    - `PORT`: `3000`
+   - `PETERPAY_API_KEY`: API key yako ya PeterPay (ikiwa unatumia huduma za malipo).
 6. Baada ya kudeploy, angalia **Logs** ili uweze kuscan QR code.
 7. **Kama QR inakataa (Mboni inagoma)**: Ongeza variable ya `PAIRING_NUMBER` (mfano: `255682211773`) na utapata kodi ya tarakimu 8 kwenye logs au kwa kufungua link ya bot yako (`/qr`). Ingiza kodi hiyo kwenye WhatsApp > Linked Devices > Link with phone number instead.
 
