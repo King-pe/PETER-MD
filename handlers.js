@@ -3,6 +3,7 @@ const whatsapp = require('./lib/whatsapp');
 const yts = require('yt-search');
 const ytdl = require('@distube/ytdl-core');
 const fs = require('fs');
+const { Tiktok } = require('@tobyg74/tiktok-api-dl');
 
 async function handleCommand(sock, m, body, prefix) {
     const isGroup = m.key.remoteJid.endsWith('@g.us');
@@ -203,6 +204,26 @@ async function handleCommand(sock, m, body, prefix) {
             }
             break;
 
+        case 'tiktok':
+        case 'tt':
+            if (!args[0]) return reply('❌ Weka link ya TikTok. Mfano: .tiktok https://vm.tiktok.com/...');
+            
+            try {
+                reply('⬇️ Inapakua video...');
+                const data = await Tiktok(args[0]);
+
+                if (data.status !== 'success') return reply('❌ Imeshindwa kupata video. Hakikisha link ni public.');
+
+                await sock.sendMessage(from, { 
+                    video: { url: data.result.nowatermark || data.result.watermark }, 
+                    caption: `🎵 *${data.result.description || 'TikTok Video'}*\n👤 ${data.result.author.nickname}` 
+                }, { quoted: m });
+
+            } catch (err) {
+                reply('❌ Hitilafu: ' + err.message);
+            }
+            break;
+
         case 'walink':
             if (!args[0]) return reply('Tumia: .walink 255712345678 Ujumbe wako');
             try {
@@ -219,7 +240,7 @@ async function handleCommand(sock, m, body, prefix) {
             break;
 
         case 'qrcode':
-            reply('📱 QR Code ni inapatikana kwenye: http://localhost:3000/qr\nScan kwa WhatsApp kuunganisha bot.');
+            reply('📱 QR Code ni inapatikana kwenye: https://peter-md-8wpz.onrender.com/qr\nScan kwa WhatsApp kuunganisha bot.');
             break;
 
         case 'botstatus':

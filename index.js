@@ -72,6 +72,23 @@ async function start() {
 				console.error('Error handling message:', err);
 			}
 		});
+
+		// Listen for group participants update (Goodbye Message)
+		client.ev.on('group-participants.update', async (update) => {
+			try {
+				const { id, participants, action } = update;
+				if (action === 'remove') {
+					for (const participant of participants) {
+						await client.sendMessage(id, {
+							text: `Kwaheri @${participant.split('@')[0]} 👋. Tutaonana baadaye!`,
+							mentions: [participant]
+						});
+					}
+				}
+			} catch (err) {
+				console.error('Error in group-participants.update:', err);
+			}
+		});
 	} catch (err) {
 		console.error('error during start():', err);
 		throw err;
