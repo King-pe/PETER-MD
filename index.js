@@ -17,10 +17,12 @@ let client = null;
 let currentQr = null;
 let isConnected = false;
 let connectionStatus = 'starting';
+let lastError = '';
 
 async function start() {
 	currentQr = null; // Reset QR on start
 	connectionStatus = 'starting';
+	lastError = '';
 	console.log('starting WhatsApp client, session path:', SESSION_PATH);
 	try {
 		const { state, saveCreds } = await useMultiFileAuthState(SESSION_PATH);
@@ -53,13 +55,14 @@ async function start() {
 				isConnected = false;
 				const reason = lastDisconnect?.error?.output?.statusCode;
 				console.log('❌ Connection closed:', reason);
+				lastError = `Connection closed: ${reason || 'Unknown'}`;
 
 				if (reason === DisconnectReason.loggedOut) {
 					console.log('🔄 Logged out, deleting session files');
 					try { fs.rmSync(SESSION_PATH, { recursive: true, force: true }); } catch (e) {}
 				} else {
 					console.log('🔄 Connection closed, reconnecting...');
-					setTimeout(start, 3000);
+					setTimeout(() => start().catch(console.error), 3000);
 				}
 			}
 		});
@@ -154,6 +157,8 @@ start().catch(err => {
 const app = express();
 
 app.get('/qr', async (req, res) => {
+	res.setHeader('Content-Type', 'text/html');
+
 	if (currentQr) {
 		try {
 			const url = await qrcode.toDataURL(currentQr);
@@ -162,20 +167,21 @@ app.get('/qr', async (req, res) => {
 				<html>
 				<head>
 					<title>Peter-MD QR Scan</title>
-					<meta http-equiv="refresh" content="10">
+					<meta http-equiv="refresh" content="5">
 					<style>body{display:flex;justify-content:center;align-items:center;height:100vh;background:#f0f2f5;font-family:sans-serif;} .card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);text-align:center;}</style>
 				</head>
 				<body>
 					<div class="card">
 						<h2>Scan QR Code</h2>
 						<img src="${url}" alt="QR Code" />
-						<p>Reloads every 10 seconds</p>
+						<p>Reloads every 5 seconds</p>
+						<p style="font-size:12px;color:gray;">Status: ${connectionStatus}</p>
 					</div>
 				</body>
 				</html>
 			`);
 		} catch (err) {
-			return res.status(500).send('Error generating QR image');
+			// Fallback if image generation fails
 		}
 	}
 
@@ -202,6 +208,7 @@ app.get('/qr', async (req, res) => {
 			<body>
 				<h2>QR Code Loading...</h2>
 				<p>Current Status: <b>${connectionStatus}</b></p>
+				${lastError ? `<p style="color:red;">Last Error: ${lastError}</p>` : ''}
 				<p>Please wait, page reloads every 5 seconds. (Bot is restarting if status is 'close')</p>
 				<br>
 				<p>If it's stuck on "connecting" for long:</p>
