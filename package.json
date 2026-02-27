@@ -8,6 +8,9 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "yt-search": "^2.12.1",
+    "@distube/ytdl-core": "^4.15.1",
+    "@tobyg74/tiktok-api-dl": "^1.1.9",
     "@adiwajshing/baileys": "^5.0.0",
     "@whiskeysockets/baileys": "6.7.5",
     "axios": "^1.6.0",

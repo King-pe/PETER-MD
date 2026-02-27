@@ -31,6 +31,51 @@ async function handleCommand(sock, m, body, prefix) {
     };
 
     switch (command) {
+        case 'menu':
+        case 'help':
+            const botNumberForMenu = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+            let botProfilePic;
+            try {
+                botProfilePic = await sock.profilePictureUrl(botNumberForMenu, 'image');
+            } catch {
+                botProfilePic = 'https://i.imgur.com/HeIi0w0.png'; // Picha ya default
+            }
+
+            const menuText = `
+*PETER-MD BOT MENU* 🤖
+
+*👥 Group Management (Admin)*
+  • \`.kick @user\` - Mtoe mtu
+  • \`.add <namba>\` - Ongeza mtu
+  • \`.promote @user\` - Mfanye admin
+  • \`.demote @user\` - Mshushe admin
+  • \`.open\` - Fungua group
+  • \`.close\` - Funga group
+  • \`.tagall\` - Tag wanachama wote
+  • \`.groupinfo\` - Pata maelezo ya group
+  • \`.link\` - Pata link ya group
+  • \`.resetlink\` - Badilisha link ya group
+  • \`.groupname <jina>\` - Badili jina la group
+  • \`.groupdesc <maelezo>\` - Badili maelezo ya group
+
+*📥 Downloader Commands*
+  • \`.play <wimbo>\` - Pakua wimbo
+  • \`.tiktok <link>\` - Pakua video ya TikTok
+
+*⚙️ Bot Settings*
+  • \`.react on|off\` - Washa/Zima auto-react
+  • \`.statusview on|off\` - Washa/Zima auto-view status
+  • \`.statuscomment on|off\` - Washa/Zima auto-reply status
+  • \`.setstatusreply <ujumbe>\` - Weka ujumbe wa status
+
+*🛠️ Utility*
+  • \`.walink <namba> <ujumbe>\` - Tengeneza link ya WhatsApp
+  • \`.qrcode\` - Pata QR code ya bot
+  • \`.botstatus\` - Angalia hali ya bot
+`.trim();
+            await sock.sendMessage(from, { image: { url: botProfilePic }, caption: menuText }, { quoted: m });
+            break;
+
         case 'kick':
             if (!isGroup) return reply('Amri hii inafanya kazi kwenye vikundi tu.');
             if (!(await checkAdmin(from, sender))) return reply('Wewe si admin.');
