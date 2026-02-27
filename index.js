@@ -10,7 +10,7 @@ const { Boom } = require('@hapi/boom');
 const P = require('pino');
 const fs = require('fs');
 const express = require('express');
-const qrcode = require('qrcode-terminal');
+const QRCode = require('qrcode');
 const { connectDB, getSetting } = require('./database/db');
 const { handleCommand } = require('./lib/handlers');
 const Config = require('./config');
@@ -20,6 +20,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 const prefix = process.env.PREFIX || '.';
 const ownerNumber = process.env.OWNER_NUMBER || '255682211773';
+
+// Variable to store the latest QR code
+let lastQr = null;
 
 // Memory store to keep track of status messages seen
 const statusSeen = new Set();
@@ -33,7 +36,7 @@ async function startBot() {
     const sock = makeWASocket({
         version,
         auth: state,
-        printQRInTerminal: true,
+        printQRInTerminal: false,
         logger: P({ level: 'silent' }),
         browser: ['Peter-MD Bot', 'Chrome', '120.0.0'],
         getMessage: async (key) => { return { conversation: 'Peter-MD' } }
@@ -42,14 +45,15 @@ async function startBot() {
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect, qr } = update;
         if (qr) {
-            console.log('Scan QR Code to connect:');
-            // qrcode.generate(qr, { small: true }); // Terminal QR
+            lastQr = qr;
+            console.log('New QR Code generated. Visit /qr to scan.');
         }
         if (connection === 'close') {
             const shouldReconnect = (lastDisconnect.error instanceof Boom) ? lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut : true;
             console.log('Connection closed. Reconnecting...', shouldReconnect);
             if (shouldReconnect) startBot();
         } else if (connection === 'open') {
+            lastQr = null; // Clear QR once connected
             console.log('✅ Bot is online!');
         }
     });
@@ -108,7 +112,29 @@ async function startBot() {
     });
 
     // Web endpoint for Render
-    app.get('/', (req, res) => res.send('Peter-MD Bot is Running!'));
+    app.get('/', (req, res) => res.send('Peter-MD Bot is Running! Visit /qr to scan QR code.'));
+    
+    app.get('/qr', async (req, res) => {
+        if (!lastQr) {
+            return res.send('Bot is already connected or QR not generated yet. Please wait or check logs.');
+        }
+        try {
+            const qrImage = await QRCode.toDataURL(lastQr);
+            res.send(`
+                <html>
+                    <body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
+                        <h1>Scan QR Code to Connect Peter-MD</h1>
+                        <img src="${qrImage}" style="width: 300px; height: 300px; border: 10px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.1);" />
+                        <p>QR code will expire in 60 seconds. Refresh if it doesn't work.</p>
+                        <script>setTimeout(() => { location.reload(); }, 60000);</script>
+                    </body>
+                </html>
+            `);
+        } catch (err) {
+            res.status(500).send('Error generating QR code image.');
+        }
+    });
+
     app.listen(port, () => console.log(`Server started on port ${port}`));
 }
 
