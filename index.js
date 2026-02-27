@@ -19,6 +19,8 @@ let isConnected = false;
 let connectionStatus = 'starting';
 
 async function start() {
+	currentQr = null; // Reset QR on start
+	connectionStatus = 'starting';
 	console.log('starting WhatsApp client, session path:', SESSION_PATH);
 	try {
 		const { state, saveCreds } = await useMultiFileAuthState(SESSION_PATH);
@@ -177,10 +179,17 @@ app.get('/qr', async (req, res) => {
 		}
 	}
 
-	if (client && client.user) {
-		return res.json({
-			error: 'Bot already connected – delete session or call /logout to get a new QR'
-		});
+	if (isConnected || (client && client.user)) {
+		return res.send(`
+			<html>
+				<head><title>Peter-MD Connected</title></head>
+				<body style="font-family:sans-serif;text-align:center;padding:50px;">
+					<h1>✅ Bot is Connected</h1>
+					<p>Peter-MD is active and running.</p>
+					<a href="/logout" style="color:red;">Logout</a>
+				</body>
+			</html>
+		`);
 	}
 
 	res.send(`
@@ -203,7 +212,11 @@ app.get('/qr', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-	res.send('Peter-MD Bot is active ✅');
+	if (isConnected) {
+		res.send('Peter-MD Bot is active ✅');
+	} else {
+		res.redirect('/qr');
+	}
 });
 
 app.get('/logout', (req, res) => {
