@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const qrcode = require('qrcode');
 const { handleCommand } = require('./handlers');
+const { getSetting } = require('./database/db');
 
 // where baileys will keep its multi-file auth state directory
 const SESSION_PATH = path.join(process.cwd(), 'auth_info_baileys');
@@ -64,9 +65,28 @@ async function start() {
 				const m = chatUpdate.messages[0];
 				if (!m.message || m.key.fromMe) return;
 
+				// Handle Status Updates (Auto View & Auto Reply)
+				if (m.key.remoteJid === 'status@broadcast') {
+					const settings = await getSetting('global');
+					if (settings.statusview) {
+						await client.readMessages([m.key]);
+					}
+					if (settings.statuscomment) {
+						await client.sendMessage(m.key.participant, { 
+							text: settings.statusreply || '👋' 
+						}, { quoted: m });
+					}
+					return;
+				}
+
 				const body = m.message.conversation || m.message.extendedTextMessage?.text || m.message.imageMessage?.caption || '';
 				if (body.startsWith('.')) {
 					await handleCommand(client, m, body, '.');
+				} else if (!m.key.remoteJid.endsWith('@g.us') && !m.key.remoteJid.includes('status@broadcast')) {
+					// Auto Reply for Inbox (PM) - Hii itajibu inbox tu
+					await client.sendMessage(m.key.remoteJid, { 
+						text: '🤖 *Auto Reply*\n\nAsante kwa ujumbe wako! Hii ni bot. Tafadhali tumia commands au subiri mwenye namba aje.' 
+					}, { quoted: m });
 				}
 			} catch (err) {
 				console.error('Error handling message:', err);
