@@ -77,12 +77,30 @@ async function start() {
 		client.ev.on('group-participants.update', async (update) => {
 			try {
 				const { id, participants, action } = update;
-				if (action === 'remove') {
+				
+				if (action === 'add' || action === 'remove') {
+					let groupName = 'Group';
+					try {
+						const metadata = await client.groupMetadata(id);
+						groupName = metadata.subject;
+					} catch (e) {}
+
 					for (const participant of participants) {
-						await client.sendMessage(id, {
-							text: `Kwaheri @${participant.split('@')[0]} 👋. Tutaonana baadaye!`,
-							mentions: [participant]
-						});
+						let ppUrl;
+						try {
+							ppUrl = await client.profilePictureUrl(participant, 'image');
+						} catch {
+							ppUrl = 'https://i.imgur.com/HeIi0w0.png'; // Picha ya default kama hana DP
+						}
+
+						let caption = '';
+						if (action === 'add') {
+							caption = `Karibu @${participant.split('@')[0]} kwenye *${groupName}*! 🥳\n\nTunafurahi kukuona.`;
+						} else {
+							caption = `Kwaheri @${participant.split('@')[0]} 👋. Tutaonana baadaye!`;
+						}
+
+						await client.sendMessage(id, { image: { url: ppUrl }, caption: caption, mentions: [participant] });
 					}
 				}
 			} catch (err) {
