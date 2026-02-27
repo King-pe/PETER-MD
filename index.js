@@ -13,6 +13,7 @@ const express = require('express');
 const qrcode = require('qrcode-terminal');
 const { connectDB, getSetting } = require('./database/db');
 const { handleCommand } = require('./lib/handlers');
+const Config = require('./config');
 require('dotenv').config();
 
 const app = express();
@@ -24,7 +25,7 @@ const ownerNumber = process.env.OWNER_NUMBER || '255682211773';
 const statusSeen = new Set();
 
 async function startBot() {
-    await connectDB(process.env.MONGODB_URI);
+    await connectDB(Config.MONGODB_URI);
 
     const { state, saveCreds } = await useMultiFileAuthState('sessions');
     const { version } = await fetchLatestBaileysVersion();

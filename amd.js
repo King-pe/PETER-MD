@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const Config = require(__dirname + "/../config.js");
+const Config = require("./config.js");
 const blockJid = ["" + (process.env.BLOCKJIDS || "120363023983262391@g.us"), ...(typeof global.blockJids === "string" ? global.blockJids.split(",") : [])];
 const allowJid = ["null", ...(typeof global.allowJids === "string" ? global.allowJids.split(",") : [])];
 const Pino = require("pino");
