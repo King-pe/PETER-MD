@@ -38,22 +38,35 @@ async function startBot() {
         auth: state,
         printQRInTerminal: false,
         logger: P({ level: 'silent' }),
-        browser: ["Ubuntu", "Chrome", "20.0.04"],
-        getMessage: async (key) => { return { conversation: 'Peter-MD' } }
+        browser: ["Mac OS", "Chrome", "120.0.0"],
+        getMessage: async (key) => { return { conversation: 'Peter-MD' } },
+        syncFullHistory: false,
+        markOnlineThreshold: 0,
+        retryRequestDelayMs: 10,
+        fireInitQueries: false,
+        emitOwnEvents: true,
+        defaultQueryTimeoutMs: 0,
+        maxMsToWaitForConnection: 30000
     });
 
     // Pairing Code Support
-    if (process.env.PAIRING_NUMBER && !sock.authState.creds.registered) {
+    if (process.env.PAIRING_NUMBER) {
         setTimeout(async () => {
             try {
-                let code = await sock.requestPairingCode(process.env.PAIRING_NUMBER.replace(/[^0-9]/g, ''));
+                const phoneNumber = process.env.PAIRING_NUMBER.replace(/[^0-9]/g, '');
+                console.log(`📱 Requesting pairing code for: ${phoneNumber}`);
+                let code = await sock.requestPairingCode(phoneNumber);
                 code = code?.match(/.{1,4}/g)?.join("-") || code;
                 console.log(`✅ Pairing Code: ${code}`);
                 lastQr = `CODE:${code}`; // Store code in lastQr with a prefix for the web UI
             } catch (err) {
                 console.error('Error requesting pairing code:', err);
+                // Retry after 5 seconds if failed
+                setTimeout(() => {
+                    sock.ev.emit('connection.update', { qr: null });
+                }, 5000);
             }
-        }, 3000);
+        }, 2000);
     }
 
     sock.ev.on('connection.update', (update) => {
