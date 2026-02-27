@@ -42,5 +42,21 @@ WhatsApp Bot yenye mifumo ya **Group Management**, **Auto-React**, na **Status A
 - `.link` - Pata link ya group.
 - `.resetlink` - Badilisha link ya group.
 
+## TROUBLESHOOTING:
+
+### "Couldn't login" Error:
+Kama unapata hitilafu ya "Couldn't login" baada ya kuscan au kuingiza kodi:
+1. Jaribu kuingiza kodi tena (kodi inatokea kila dakika)
+2. Kama bado haijakamatia, kusafisha session:
+   - Kwenye Render: Nenda kwenye **Files** > Futa folder ya `sessions`
+   - Kisha restart bot
+3. Hakikisha namba ya simu ni sahihi kwenye `PAIRING_NUMBER`
+4. Jaribu kutumia QR code badala ya pairing code (ondoa `PAIRING_NUMBER` variable)
+
+### Bot inakatika wakati wa kuunganisha:
+1. Hakikisha MongoDB URI ni sahihi
+2. Angalia kuwa internet connection ni thabiti
+3. Jaribu kusafisha sessions folder na kuanza tena
+
 ---
 **Made with ❤️ by Manus**

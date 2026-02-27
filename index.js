@@ -25,22 +25,63 @@ const ownerNumber = process.env.OWNER_NUMBER || '255682211773';
 // Variable to store the latest QR code
 let lastQr = null;
 let pairingCodeRequested = false;
+let connectionAttempts = 0;
 
 // Memory store to keep track of status messages seen
 const statusSeen = new Set();
 
+// Function to clean up sessions folder
+function cleanupSessions() {
+    const sessionsDir = path.join(process.cwd(), 'sessions');
+    if (fs.existsSync(sessionsDir)) {
+        try {
+            const files = fs.readdirSync(sessionsDir);
+            files.forEach(file => {
+                const filePath = path.join(sessionsDir, file);
+                if (fs.lstatSync(filePath).isDirectory()) {
+                    fs.rmSync(filePath, { recursive: true, force: true });
+                } else {
+                    fs.unlinkSync(filePath);
+                }
+            });
+            console.log('✅ Sessions folder cleaned up');
+        } catch (err) {
+            console.error('Error cleaning sessions:', err);
+        }
+    }
+}
+
+// Function to clear old credentials if login fails
+function resetAuthState() {
+    const sessionsDir = path.join(process.cwd(), 'sessions');
+    if (fs.existsSync(sessionsDir)) {
+        try {
+            fs.rmSync(sessionsDir, { recursive: true, force: true });
+            console.log('🔄 Auth state reset - sessions cleared');
+        } catch (err) {
+            console.error('Error resetting auth state:', err);
+        }
+    }
+}
+
 async function startBot() {
-    await connectDB(Config.MONGODB_URI);
+    try {
+        await connectDB(Config.MONGODB_URI);
+    } catch (err) {
+        console.error('Database connection error:', err);
+        setTimeout(() => startBot(), 5000);
+        return;
+    }
 
     const { state, saveCreds } = await useMultiFileAuthState('sessions');
-    const { version } = await fetchLatestBaileysVersion();
+    let { version } = await fetchLatestBaileysVersion();
 
     const sock = makeWASocket({
         version,
         auth: state,
         printQRInTerminal: false,
         logger: P({ level: 'silent' }),
-        browser: ["Ubuntu", "Chrome", "20.0.04"],
+        browser: ["Windows", "Chrome", "120.0.0"],
         getMessage: async (key) => { return { conversation: 'Peter-MD' } },
         syncFullHistory: false,
         markOnlineThreshold: 0,
@@ -50,15 +91,21 @@ async function startBot() {
         defaultQueryTimeoutMs: 0,
         maxMsToWaitForConnection: 30000,
         keepAliveIntervalMs: 30000,
-        generateHighQualityLinkPreview: false
+        generateHighQualityLinkPreview: false,
+        shouldIgnoreJid: (jid) => false,
+        fetchMessagesFromWA: true,
+        linkPreviewImageThumbnailWidth: 0
     });
 
-    // Pairing Code Support - Request immediately when socket is ready
+    let connectionErrorCount = 0;
+
     sock.ev.on('connection.update', async (update) => {
-        const { connection, lastDisconnect, qr } = update;
+        const { connection, lastDisconnect, qr, isNewLogin } = update;
         
-        // Request pairing code if PAIRING_NUMBER is set and not already requested
-        if (process.env.PAIRING_NUMBER && !pairingCodeRequested && connection === 'connecting') {
+        console.log(`📡 Connection Update: ${connection}`);
+
+        // Request pairing code if PAIRING_NUMBER is set
+        if (process.env.PAIRING_NUMBER && !pairingCodeRequested && (connection === 'connecting' || qr)) {
             pairingCodeRequested = true;
             setTimeout(async () => {
                 try {
@@ -68,35 +115,63 @@ async function startBot() {
                     const formattedCode = code?.match(/.{1,4}/g)?.join("-") || code;
                     console.log(`✅ Pairing Code: ${formattedCode}`);
                     lastQr = `CODE:${formattedCode}`;
+                    connectionErrorCount = 0;
                 } catch (err) {
                     console.error('❌ Error requesting pairing code:', err.message);
-                    pairingCodeRequested = false; // Reset to retry
+                    pairingCodeRequested = false;
                 }
-            }, 1000);
+            }, 500);
         }
 
-        // Handle QR code
+        // Handle QR code (fallback if pairing code not used)
         if (qr && !process.env.PAIRING_NUMBER) {
             lastQr = qr;
             console.log('📲 New QR Code generated. Visit /qr to scan.');
         }
 
-        // Handle connection close
+        // Handle connection close/error
         if (connection === 'close') {
-            const shouldReconnect = (lastDisconnect.error instanceof Boom) ? lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut : true;
-            console.log('Connection closed. Reconnecting...', shouldReconnect);
-            pairingCodeRequested = false; // Reset for next attempt
+            connectionErrorCount++;
+            const shouldReconnect = (lastDisconnect?.error instanceof Boom) 
+                ? lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut 
+                : true;
+
+            console.log(`Connection closed. Error count: ${connectionErrorCount}`);
+
+            // If login failed multiple times, reset auth state
+            if (connectionErrorCount > 2) {
+                console.log('⚠️ Multiple connection failures detected. Resetting auth state...');
+                resetAuthState();
+                connectionErrorCount = 0;
+            }
+
+            pairingCodeRequested = false;
+
             if (shouldReconnect) {
+                console.log('🔄 Attempting to reconnect in 3 seconds...');
                 setTimeout(() => startBot(), 3000);
+            } else {
+                console.log('❌ Logged out. Please restart the bot.');
             }
         } else if (connection === 'open') {
             lastQr = null;
             pairingCodeRequested = false;
+            connectionErrorCount = 0;
             console.log('✅ Bot is online!');
         }
     });
 
     sock.ev.on('creds.update', saveCreds);
+
+    // Handle auth failure
+    sock.ev.on('auth-error', (err) => {
+        console.error('🔐 Auth Error:', err);
+        connectionErrorCount++;
+        if (connectionErrorCount > 1) {
+            console.log('Resetting auth due to auth error...');
+            resetAuthState();
+        }
+    });
 
     sock.ev.on('messages.upsert', async (chatUpdate) => {
         try {
@@ -123,7 +198,7 @@ async function startBot() {
                     setTimeout(async () => {
                         await sock.sendMessage(m.key.participant, { text: globalSetting.statusreply }, { quoted: m });
                         console.log(`Commented on status from: ${m.key.participant}`);
-                    }, 4000); // 4s delay
+                    }, 4000);
                 }
                 return;
             }
@@ -191,12 +266,12 @@ async function startBot() {
                                     <li>Nenda kwenye <strong>Linked Devices</strong></li>
                                     <li>Chagua <strong>Link with phone number instead</strong></li>
                                     <li>Ingiza kodi hii: <strong>${code}</strong></li>
+                                    <li>Kama inaandika "Couldn't login", jaribu tena au refresh page hii</li>
                                 </ol>
                             </div>
                             <p style="color: #888; font-size: 0.9rem; margin-top: 20px;">Kodi hii itakataa baada ya dakika 1. Refresh kama inakataa.</p>
                             <script>
                                 setTimeout(() => { location.reload(); }, 60000);
-                                // Auto-refresh every 30 seconds to get new code
                                 setInterval(() => { location.reload(); }, 30000);
                             </script>
                         </div>
