@@ -6,6 +6,7 @@ const { default: makeWASocket,
 const fs = require('fs');
 const path = require('path');
 const qrcode = require('qrcode');
+const { handleCommand } = require('./handlers');
 
 // where baileys will keep its multi-file auth state directory
 const SESSION_PATH = path.join(process.cwd(), 'auth_info_baileys');
@@ -56,6 +57,21 @@ async function start() {
 		});
 
 		client.ev.on('creds.update', saveCreds);
+
+		// Listen for new messages
+		client.ev.on('messages.upsert', async chatUpdate => {
+			try {
+				const m = chatUpdate.messages[0];
+				if (!m.message || m.key.fromMe) return;
+
+				const body = m.message.conversation || m.message.extendedTextMessage?.text || m.message.imageMessage?.caption || '';
+				if (body.startsWith('.')) {
+					await handleCommand(client, m, body, '.');
+				}
+			} catch (err) {
+				console.error('Error handling message:', err);
+			}
+		});
 	} catch (err) {
 		console.error('error during start():', err);
 		throw err;

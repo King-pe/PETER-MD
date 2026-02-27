@@ -1,5 +1,8 @@
-const { getSetting, updateSetting } = require('../database/db');
-const whatsapp = require('./whatsapp');
+const { getSetting, updateSetting } = require('./database/db');
+const whatsapp = require('./lib/whatsapp');
+const yts = require('yt-search');
+const ytdl = require('@distube/ytdl-core');
+const fs = require('fs');
 
 async function handleCommand(sock, m, body, prefix) {
     const isGroup = m.key.remoteJid.endsWith('@g.us');
@@ -169,6 +172,35 @@ async function handleCommand(sock, m, body, prefix) {
             if (!args.length) return reply('Weka ujumbe wa reply.');
             await updateSetting('global', { statusreply: args.join(' ') });
             reply('Ujumbe wa status reply umehifadhiwa.');
+            break;
+
+        case 'play':
+        case 'song':
+            if (!args.length) return reply('❌ Tafadhali taja jina la wimbo. Mfano: .play Diamond Yatapita');
+            
+            try {
+                reply('🔍 Inatafuta wimbo...');
+                const search = await yts(args.join(' '));
+                const video = search.videos[0];
+
+                if (!video) return reply('❌ Wimbo haukupatikana.');
+
+                reply(`🎧 Inapakua: *${video.title}* (${video.timestamp})...`);
+
+                const stream = ytdl(video.url, { filter: 'audioonly' });
+                const filePath = `./${Date.now()}.mp3`;
+                const writeStream = fs.createWriteStream(filePath);
+
+                stream.pipe(writeStream);
+
+                writeStream.on('finish', async () => {
+                    await sock.sendMessage(from, { audio: { url: filePath }, mimetype: 'audio/mp4', ptt: false }, { quoted: m });
+                    fs.unlinkSync(filePath); // Futa faili baada ya kutuma
+                });
+
+            } catch (err) {
+                reply('❌ Hitilafu wakati wa kupakua: ' + err.message);
+            }
             break;
 
         case 'walink':
