@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "peter-md-bot",
   "version": "1.0.0",
   "description": "Peter-MD Stable WhatsApp Bot",
@@ -19,6 +20,6 @@
   "engines": {
     "node": ">=18"
   },
-  "author": "Manus",
+  "author": "King-pe",
   "license": "MIT"
 }
