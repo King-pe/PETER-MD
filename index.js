@@ -119,8 +119,8 @@ app.listen(process.env.PORT || 3000, () => {
 	console.log('http server listening');
 
 	// Auto-ping to keep Render awake
-	const pingUrl = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 3000}`;
+	const pingUrl = process.env.RENDER_EXTERNAL_URL || 'https://peter-md-8wpz.onrender.com';
 	setInterval(() => {
 		fetch(pingUrl).then(() => console.log('✅ Keep-alive ping')).catch(() => {});
-	}, 10 * 60 * 1000); // Ping every 10 minutes
+	}, 5 * 60 * 1000); // Ping every 5 minutes to prevent sleep
 });
