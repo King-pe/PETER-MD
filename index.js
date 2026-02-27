@@ -167,22 +167,78 @@ app.get('/qr', async (req, res) => {
 		try {
 			const url = await qrcode.toDataURL(currentQr);
 			return res.send(`
-				<!DOCTYPE html>
-				<html>
-				<head>
-					<title>Peter-MD QR Scan</title>
-					<meta http-equiv="refresh" content="5">
-					<style>body{display:flex;justify-content:center;align-items:center;height:100vh;background:#f0f2f5;font-family:sans-serif;} .card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);text-align:center;}</style>
-				</head>
-				<body>
-					<div class="card">
-						<h2>Scan QR Code</h2>
-						<img src="${url}" alt="QR Code" />
-						<p>Reloads every 5 seconds</p>
-						<p style="font-size:12px;color:gray;">Status: ${connectionStatus}</p>
-					</div>
-				</body>
-				</html>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Peter-MD QR Code</title>
+            <style>
+                body { font-family: Arial; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #f0f0f0; }
+                .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+                h1 { color: #333; margin-bottom: 20px; }
+                img { width: 300px; height: 300px; margin: 20px 0; }
+                .status { color: #666; font-size: 14px; margin-top: 10px; }
+                .code { background: #f9f9f9; padding: 10px; border-radius: 5px; font-family: monospace; margin: 10px 0; word-break: break-all; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>📱 Peter-MD WhatsApp Bot</h1>
+                <h2>Scan QR Code to Connect</h2>
+                <img src="${url}" alt="QR Code"/>
+                <div class="status">
+                    <p>⏱️ Refresh every 60 seconds</p>
+                    <p id="timer">Refreshing...</p>
+                </div>
+                <div class="code">${currentQr}</div>
+            </div>
+            <script>
+                let countdown = 60;
+                setInterval(() => {
+                    countdown--;
+                    document.getElementById('timer').textContent = 'Refreshing in ' + countdown + 's';
+                    if (countdown <= 0) location.reload();
+                }, 1000);
+            </script>
+        </body>
+        </html>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Peter-MD QR Code</title>
+            <style>
+                body { font-family: Arial; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #f0f0f0; }
+                .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+                h1 { color: #333; margin-bottom: 20px; }
+                img { width: 300px; height: 300px; margin: 20px 0; }
+                .status { color: #666; font-size: 14px; margin-top: 10px; }
+                .code { background: #f9f9f9; padding: 10px; border-radius: 5px; font-family: monospace; margin: 10px 0; word-break: break-all; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>📱 Peter-MD WhatsApp Bot</h1>
+                <h2>Scan QR Code to Connect</h2>
+                <img src="${url}" alt="QR Code"/>
+                <div class="status">
+                    <p>⏱️ Refresh every 60 seconds</p>
+                    <p id="timer">Refreshing...</p>
+                </div>
+                <div class="code">${currentQr}</div>
+            </div>
+            <script>
+                let countdown = 60;
+                setInterval(() => {
+                    countdown--;
+                    document.getElementById('timer').textContent = 'Refreshing in ' + countdown + 's';
+                    if (countdown <= 0) location.reload();
+                }, 1000);
+            </script>
+        </body>
+        </html>
 			`);
 		} catch (err) {
 			// Fallback if image generation fails
@@ -211,8 +267,12 @@ app.get('/qr', async (req, res) => {
 			</head>
 			<body>
 				<h2>QR Code Loading...</h2>
-				<p>Current Status: <b>${connectionStatus}</b></p>
-				${lastError ? `<p style="color:red;">Last Error: ${lastError}</p>` : ''}
+con>C PORT = ent Status: <b>${connect;
+app.listen(PORTionStatus}</b></p>
+    			${lastErro🌐`Sp str Running on Poyt ' + PORT);
+    console.log(`📱 Access QR:lhttp://locaeho"c:${PORT}/qr`);
+    consolo.log(`🔗 WhatsApp Lilk: http://localhost:${PORT}/whatsapp-lonk`);
+    corsole.lo:(`📊 Status: http://localhost:${PORT}/status`ed;">Last Error: ${lastError}</p>` : ''}
 				${lastError.includes('405') ? '<p style="color:orange;font-weight:bold;">⚠️ 405 Error: Please click "Reset Session" below to fix.</p>' : ''}
 				<p>Please wait, page reloads every 5 seconds. (Bot is restarting if status is 'close')</p>
 				<br>
@@ -249,6 +309,12 @@ app.get('/reset', (req, res) => {
 
 app.listen(process.env.PORT || 3000, () => {
 	console.log('http server listening');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log('🌐 Server Running on Port ' + PORT);
+    console.log(`📱 Access QR: http://localhost:${PORT}/qr`);
+    console.log(`🔗 WhatsApp Link: http://localhost:${PORT}/whatsapp-link`);
+    console.log(`📊 Status: http://localhost:${PORT}/status`);
 
 	// Auto-ping to keep Render awake
 	const pingUrl = process.env.RENDER_EXTERNAL_URL || 'https://peter-md-8wpz.onrender.com';
