@@ -33,7 +33,7 @@ async function start() {
 			logger: pino({ level: 'silent' }),
 			auth: state,
 			printQRInTerminal: true,
-			browser: ["Ubuntu", "Chrome", "20.0.04"],
+			browser: ["Ubuntu", "Chrome", "20.0.04"], // Hii ni sawa kwa Render
 			syncFullHistory: false,
 			keepAliveIntervalMs: 30000, // Husaidia connection isipotee hovyo
 			connectTimeoutMs: 60000,
