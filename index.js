@@ -33,14 +33,15 @@ async function start() {
 			logger: pino({ level: 'silent' }),
 			auth: state,
 			printQRInTerminal: true,
-			browser: Browsers.macOS('Desktop'),
+			browser: ["Ubuntu", "Chrome", "20.0.04"],
 			syncFullHistory: false,
+			keepAliveIntervalMs: 30000, // Husaidia connection isipotee hovyo
 			connectTimeoutMs: 60000,
 		});
 
 		client.ev.on('connection.update', update => {
 		// log the full update for debugging environments where no events arrive
-		console.log('connection.update', JSON.stringify(update));
+		// console.log('connection.update', JSON.stringify(update)); // Commented out to reduce log spam
 		const { connection, qr, lastDisconnect } = update;
 
 			if (connection) connectionStatus = connection;
@@ -61,14 +62,15 @@ async function start() {
 				console.log('❌ Connection closed:', reason);
 				lastError = `Connection closed: ${reason || 'Unknown'}`;
 
-				if (reason === DisconnectReason.loggedOut || reason === 405 || reason === 403) {
-					console.log('🔄 Session invalid (Logged out/405/403), deleting session files');
+				if (reason === DisconnectReason.loggedOut || reason === 405 || reason === 403 || reason === 401) {
+					console.log('⚠️ Session invalid (Logged out/405/403). Deleting session and waiting 15s...');
 					try { fs.rmSync(SESSION_PATH, { recursive: true, force: true }); } catch (e) {}
-					// Restart to generate new QR
-					setTimeout(() => start().catch(console.error), 3000);
+					
+					// Subiri sekunde 15 kabla ya kuanza tena ili kuzuia ban ya Render
+					setTimeout(() => start().catch(console.error), 15000);
 				} else {
-					console.log('🔄 Connection closed, reconnecting...');
-					setTimeout(() => start().catch(console.error), 3000);
+					console.log('🔄 Connection closed, reconnecting in 5s...');
+					setTimeout(() => start().catch(console.error), 5000);
 				}
 			}
 		});

@@ -84,7 +84,12 @@ async function handleCommand(sock, m, body, prefix) {
             if (!isGroup) return reply('Amri hii inafanya kazi kwenye vikundi tu.');
             if (!(await checkAdmin(from, sender))) return reply('Wewe si admin.');
             if (!(await checkBotAdmin(from))) return reply('Bot lazima awe admin.');
-            let userToKick = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0] || args[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+            
+            let userToKick = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];
+            if (!userToKick && args[0]) {
+                userToKick = args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+            }
+            
             if (!userToKick) return reply('Tag au weka namba ya kumtoa.');
             await sock.groupParticipantsUpdate(from, [userToKick], 'remove');
             reply('Tayari!');
@@ -94,7 +99,9 @@ async function handleCommand(sock, m, body, prefix) {
             if (!isGroup) return reply('Amri hii inafanya kazi kwenye vikundi tu.');
             if (!(await checkAdmin(from, sender))) return reply('Wewe si admin.');
             if (!(await checkBotAdmin(from))) return reply('Bot lazima awe admin.');
-            let userToAdd = args[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+            
+            let userToAdd = args[0] ? args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net' : null;
+            
             if (!userToAdd) return reply('Weka namba ya kuongeza.');
             await sock.groupParticipantsUpdate(from, [userToAdd], 'add');
             reply('Tayari!');
