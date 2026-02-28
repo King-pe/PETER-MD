@@ -7,6 +7,7 @@ const { default: makeWASocket,
 const fs = require('fs');
 const path = require('path');
 const qrcode = require('qrcode');
+const pino = require('pino');
 const { handleCommand } = require('./handlers');
 const { getSetting } = require('./database/db');
 
@@ -29,9 +30,10 @@ async function start() {
 		const { state, saveCreds } = await useMultiFileAuthState(SESSION_PATH);
 
 		client = makeWASocket({
+			logger: pino({ level: 'silent' }),
 			auth: state,
 			printQRInTerminal: true,
-			browser: ["Ubuntu", "Chrome", "20.0.04"],
+			browser: Browsers.macOS('Desktop'),
 			syncFullHistory: false,
 			connectTimeoutMs: 60000,
 		});
@@ -59,8 +61,8 @@ async function start() {
 				console.log('❌ Connection closed:', reason);
 				lastError = `Connection closed: ${reason || 'Unknown'}`;
 
-				if (reason === DisconnectReason.loggedOut || reason === 405) {
-					console.log('🔄 Session invalid (Logged out or 405), deleting session files');
+				if (reason === DisconnectReason.loggedOut || reason === 405 || reason === 403) {
+					console.log('🔄 Session invalid (Logged out/405/403), deleting session files');
 					try { fs.rmSync(SESSION_PATH, { recursive: true, force: true }); } catch (e) {}
 					// Restart to generate new QR
 					setTimeout(() => start().catch(console.error), 3000);
@@ -166,7 +168,7 @@ app.get('/qr', async (req, res) => {
 	if (currentQr) {
 		try {
 			const url = await qrcode.toDataURL(currentQr);
-			return res.send(`
+			res.send(`
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -204,6 +206,7 @@ app.get('/qr', async (req, res) => {
         </body>
         </html>
 			`);
+			return;
 		} catch (err) {
 			// Fallback if image generation fails
 		}
@@ -270,9 +273,10 @@ app.get('/reset', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('🌐 Server Running on Port ' + PORT);
-    console.log(`📱 Access QR: https://peter-md-8wpz.onrender.com${PORT}/qr`);
-    console.log(`🔗 WhatsApp Link: https://peter-md-8wpz.onrender.com${PORT}/whatsapp-link`);
-    console.log(`📊 Status: https://peter-md-8wpz.onrender.com${PORT}/status`);
+    const baseUrl = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+    console.log(`📱 Access QR: ${baseUrl}/qr`);
+    console.log(`🔗 WhatsApp Link: ${baseUrl}/whatsapp-link`);
+    console.log(`📊 Status: ${baseUrl}/status`);
 
 	// Auto-ping to keep Render awake
 	const pingUrl = process.env.RENDER_EXTERNAL_URL || 'https://peter-md-8wpz.onrender.com';

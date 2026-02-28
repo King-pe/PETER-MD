@@ -14,10 +14,14 @@ async function handleCommand(sock, m, body, prefix) {
 
     // Helper: Check if user is admin
     const checkAdmin = async (jid, user) => {
-        const metadata = await sock.groupMetadata(jid);
-        const participants = metadata.participants;
-        const participant = participants.find(p => p.id === user);
-        return participant && (participant.admin === 'admin' || participant.admin === 'superadmin');
+        try {
+            const metadata = await sock.groupMetadata(jid);
+            const participants = metadata.participants;
+            const participant = participants.find(p => p.id === user);
+            return participant && (participant.admin === 'admin' || participant.admin === 'superadmin');
+        } catch (e) {
+            return false;
+        }
     };
 
     // Helper: Check if bot is admin
